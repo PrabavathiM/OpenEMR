@@ -621,7 +621,7 @@ if (!empty($_POST['form_action']) && ($_POST['form_action'] == "save")) {
                     "pc_title = '" . add_escape_custom($_POST['form_title']) . "', " .
                     "pc_time = NOW(), " .
                     "pc_hometext = '" . add_escape_custom($_POST['form_comments']) . "', " .
-                    "pc_mobile_number = '" . add_escape_custom($_POST['mobile_number']) . "', " .
+                    "mobile_number = '" . add_escape_custom($_POST['mobile_number']) . "', " .
                     "pc_room = '" . add_escape_custom($_POST['form_room']) . "', " .
                     "pc_informant = '" . add_escape_custom($_SESSION['authUserID']) . "', " .
                     "pc_eventDate = '" . add_escape_custom($event_date) . "', " .
@@ -718,7 +718,7 @@ if (!empty($_POST['form_action']) && ($_POST['form_action'] == "save")) {
                 "pc_title = '" . add_escape_custom($_POST['form_title']) . "', " .
                 "pc_time = NOW(), " .
                 "pc_hometext = '" . add_escape_custom($_POST['form_comments']) . "', " .
-                "pc_mobile_number = '" . add_escape_custom($_POST['mobile_number']) . "', " .
+                "mobile_number = '" . add_escape_custom($_POST['mobile_number']) . "', " .
                 "pc_room = '" . add_escape_custom($_POST['form_room']) . "', " .
                 "pc_informant = '" . add_escape_custom($_SESSION['authUserID']) . "', " .
                 "pc_eventDate = '" . add_escape_custom($event_date) . "', " .
@@ -810,6 +810,7 @@ if (!empty($_REQUEST['patientid'])) {
     $patientname = null;
     $patienttitle = array();
     $pcroom = "";
+    $pcmobilenumber="";
     $hometext = "";
     $row = array();
     $informant = "";
@@ -1734,7 +1735,7 @@ if (empty($_GET['prov'])) { ?>
 <!-- added mobile number -->
 <div class="col-sm form-group">
         <label for='mobile_number'><?php echo xlt('Mobile Number'); ?>:</label>
-        <input class="form-control" type="tel" pattern="[0-9]{10}" maxlength="10" name='mobile_number' id='mobile_number' value='<?php echo attr($row['pc_mobile_number'] ?? ''); ?>' title='<?php echo xla('mobile number'); ?>' />
+        <input class="form-control" type="tel" pattern="[0-9]{10}" maxlength="10" name='mobile_number' id='mobile_number' value='<?php echo attr($row['mobile_number'] ?? ''); ?>' title='<?php echo xla('mobile number'); ?>' />
 </div>
 
 
@@ -1742,7 +1743,7 @@ if (empty($_GET['prov'])) { ?>
     <?php } ?>
 </div><!-- status row -->
 <div class="form-row mx-2">
-    <div class="col-sm form-group">
+    <div class="col-sm form-group"> 
         <label><?php echo xlt('Comments'); ?>:</label>
         <input class='form-control' type='text' name='form_comments' value='<?php echo attr($hometext); ?>' title='<?php echo xla('Optional information about this event'); ?>' />
     </div>
@@ -1772,7 +1773,7 @@ if (empty($_GET['prov'])) { ?>
     <input class="col-sm mx-sm-2 my-2 my-sm-auto btn btn-secondary" type='button' id='cancel' onclick="dlgclose()" value='<?php echo xla('Cancel'); ?>' />
     <input class="col-sm mx-sm-2 my-2 my-sm-auto btn btn-secondary" type='button' name='form_duplicate' id='form_duplicate' value='<?php echo xla('Create Duplicate'); ?>' />
 </div>
-<?php if ($informant) {
+<?php if ($informant) { 
     echo "<label><p class='text'>" . xlt('Last update by') . " " .
     text($informant) . " " . xlt('on') . " " . text($row['pc_time']) . "</p></label>\n";
 } ?>

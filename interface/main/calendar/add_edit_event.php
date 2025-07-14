@@ -236,7 +236,7 @@ function DOBandEncounter($pc_eid)
             && $is_checkin == '1'
             && !$is_tracker
         ) {
-            $encounter = todaysEncounterCheck($_POST['form_pid'], $event_date, $_POST['form_comments'], $_POST['facility'], $_POST['billing_facility'], $_POST['form_provider'], $_POST['form_category'], false);
+            $encounter = todaysEncounterCheck($_POST['form_pid'], $event_date, $_POST['form_comments'], $_POST['facility'], $_POST['billing_facility'], $_POST['form_provider'], $_POST['form_category'],$_POST['mobile_number'], false);
             if ($encounter) {
                 $info_msg .= xl("New encounter created with id");
                 $info_msg .= " $encounter";
@@ -263,7 +263,7 @@ function DOBandEncounter($pc_eid)
     if (!empty($_POST['form_gid'])) {
         // status Took Place is the check in of therapy group
         if ($GLOBALS['auto_create_new_encounters'] && $event_date == date('Y-m-d') && $_POST['form_apptstatus'] == '=') {
-            $encounter = todaysTherapyGroupEncounterCheck($_POST['form_gid'], $event_date, $_POST['form_comments'], $_POST['facility'], $_POST['billing_facility'], $_POST['form_provider'], $_POST['form_category'], false, $pc_eid);
+            $encounter = todaysTherapyGroupEncounterCheck($_POST['form_gid'], $event_date, $_POST['form_comments'], $_POST['facility'], $_POST['billing_facility'], $_POST['form_provider'], $_POST['form_category'],$_POST['mobile_number'], false, $pc_eid);
             if ($encounter) {
                 $info_msg .= xl("New group encounter created with id");
                 $info_msg .= " $encounter";
@@ -488,7 +488,7 @@ if (!empty($_POST['form_action']) && ($_POST['form_action'] == "save")) {
                     $oldRecurrspec = unserialize($origEvent['pc_recurrspec'], ['allowed_classes' => false]);
                     $selected_date = date("Ymd", strtotime($_POST['selected_date']));
                     if ($oldRecurrspec['exdate'] != "") {
-                        $oldRecurrspec['exdate'] .= "," . $selected_date;
+                        $oldRecurrspec['exdate'] .= "," . $selected_date;   
                     } else {
                         $oldRecurrspec['exdate'] .= $selected_date;
                     }
@@ -621,6 +621,7 @@ if (!empty($_POST['form_action']) && ($_POST['form_action'] == "save")) {
                     "pc_title = '" . add_escape_custom($_POST['form_title']) . "', " .
                     "pc_time = NOW(), " .
                     "pc_hometext = '" . add_escape_custom($_POST['form_comments']) . "', " .
+                    "pc_mobile_number = '" . add_escape_custom($_POST['mobile_number']) . "', " .
                     "pc_room = '" . add_escape_custom($_POST['form_room']) . "', " .
                     "pc_informant = '" . add_escape_custom($_SESSION['authUserID']) . "', " .
                     "pc_eventDate = '" . add_escape_custom($event_date) . "', " .
@@ -717,6 +718,7 @@ if (!empty($_POST['form_action']) && ($_POST['form_action'] == "save")) {
                 "pc_title = '" . add_escape_custom($_POST['form_title']) . "', " .
                 "pc_time = NOW(), " .
                 "pc_hometext = '" . add_escape_custom($_POST['form_comments']) . "', " .
+                "pc_mobile_number = '" . add_escape_custom($_POST['mobile_number']) . "', " .
                 "pc_room = '" . add_escape_custom($_POST['form_room']) . "', " .
                 "pc_informant = '" . add_escape_custom($_SESSION['authUserID']) . "', " .
                 "pc_eventDate = '" . add_escape_custom($event_date) . "', " .
@@ -861,6 +863,7 @@ if ($eid) {
 
     $recurrence_end_date = ($row['pc_endDate'] && $row['pc_endDate'] != '0000-00-00') ? $row['pc_endDate'] : null;
     $pcroom = $row['pc_room'];
+
     $hometext = $row['pc_hometext'];
     if (substr($hometext, 0, 6) == ':text:') {
         $hometext = substr($hometext, 6);
@@ -1727,6 +1730,15 @@ if (empty($_GET['prov'])) { ?>
             echo generate_select_list('form_room', 'patient_flow_board_rooms', $pcroom, xl('Room Number'));
         ?>
     </div>
+
+<!-- added mobile number -->
+<div class="col-sm form-group">
+        <label for='mobile_number'><?php echo xlt('Mobile Number'); ?>:</label>
+        <input class="form-control" type="tel" pattern="[0-9]{10}" maxlength="10" name='mobile_number' id='mobile_number' value='<?php echo attr($row['pc_mobile_number'] ?? ''); ?>' title='<?php echo xla('mobile number'); ?>' />
+</div>
+
+
+
     <?php } ?>
 </div><!-- status row -->
 <div class="form-row mx-2">

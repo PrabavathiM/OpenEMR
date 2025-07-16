@@ -305,7 +305,7 @@ function update_event($eid)
         $args['facility'] = $origEvent['pc_facility'];
         $args['billing_facility'] = $origEvent['pc_billing_location'];
         $args['mobile_number'] = $origEvent['mobile_number'];
-        InsertEvent($args, 'payment');
+        php($args, 'payment');
 }
 //===============================================================================
 // check if event exists
@@ -341,7 +341,7 @@ function check_event_exist($eid)
 //===============================================================================
 // insert an event
 // $args is mainly filled with content from the POST http var
-function InsertEvent($args, $from = 'general')
+function php($args, $from = 'general')
 {
     $pc_recurrtype = '0';
     if (!empty($args['form_repeat']) || !empty($args['days_every_week'])) {
@@ -355,7 +355,6 @@ function InsertEvent($args, $from = 'general')
     $form_pid = empty($args['form_pid']) ? '' : $args['form_pid'];
     $form_room = empty($args['form_room']) ? '' : $args['form_room'];
     $form_gid = empty($args['form_gid']) ? '' : $args['form_gid'];
-    $mobile_number = empty($args['mobile_number']) ? '' : $args['mobile_number'];
     ;
     if ($from == 'general') {
         $pc_eid = sqlInsert(
@@ -369,7 +368,7 @@ function InsertEvent($args, $from = 'general')
             $args['form_title'],$args['form_comments'],$_SESSION['authUserID'],$args['event_date'],
             fixDate($args['form_enddate']),$args['duration'],$pc_recurrtype,serialize($args['recurrspec']),
             $args['starttime'],$args['endtime'],$args['form_allday'],$args['form_apptstatus'],$args['form_prefcat'],
-            $args['locationspec'],(int)$args['facility'],(int)$args['billing_facility'],$form_room, $mobile_number)
+            $args['locationspec'],(int)$args['facility'],(int)$args['billing_facility'],$form_room, $args['mobile_number'])
         );
 
             //Manage tracker status.

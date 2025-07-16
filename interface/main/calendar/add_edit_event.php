@@ -237,7 +237,7 @@ $eventDispatcher = $GLOBALS['kernel']->getEventDispatcher();
                 && $is_checkin == '1'
                 && !$is_tracker
             ) {
-                $encounter = todaysEncounterCheck($_POST['form_pid'], $event_date, $_POST['form_comments'], $_POST['facility'], $_POST['billing_facility'], $_POST['form_provider'], $_POST['form_category'], $_POST['mobile_number'], false);
+                $encounter = todaysEncounterCheck($_POST['form_pid'], $event_date, $_POST['form_comments'], $_POST['facility'], $_POST['billing_facility'], $_POST['form_provider'], $_POST['form_category'], false);
                 if ($encounter) {
                     $info_msg .= xl("New encounter created with id");
                     $info_msg .= " $encounter";
@@ -264,7 +264,8 @@ $eventDispatcher = $GLOBALS['kernel']->getEventDispatcher();
         if (!empty($_POST['form_gid'])) {
             // status Took Place is the check in of therapy group
             if ($GLOBALS['auto_create_new_encounters'] && $event_date == date('Y-m-d') && $_POST['form_apptstatus'] == '=') {
-                $encounter = todaysTherapyGroupEncounterCheck($_POST['form_gid'], $event_date, $_POST['form_comments'], $_POST['facility'], $_POST['billing_facility'], $_POST['form_provider'], $_POST['form_category'], $_POST['mobile_number'], false, $pc_eid);
+                $encounter = todaysTherapyGroupEncounterCheck($_POST['form_gid'], $event_date, $_POST['form_comments'], $_POST['facility'], $_POST['billing_facility'], $_POST['form_provider'], $_POST['form_category'], false, $pc_eid);
+
                 if ($encounter) {
                     $info_msg .= xl("New group encounter created with id");
                     $info_msg .= " $encounter";
@@ -1748,6 +1749,7 @@ $eventDispatcher = $GLOBALS['kernel']->getEventDispatcher();
                         <label for='mobile_number'><?php echo xlt('Mobile Number'); ?>:</label>
                         <input class="form-control" type="tel"  maxlength="10" name='mobile_number' id='mobile_number' value='<?php echo attr($mobile_number) ; ?>' title='<?php echo xla('mobile_number'); ?>' />
                     </div>
+                    
 
 
 

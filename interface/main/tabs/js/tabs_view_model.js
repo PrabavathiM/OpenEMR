@@ -121,7 +121,8 @@ function tabClose(data,evt)
     //remove the tab
     app_view_model.application_data.tabs.tabsList.remove(data);
     //activate the next tab
-    if(data.visible()) {
+    if(data.visible()) {0
+        
         activateTab(app_view_model.application_data.tabs.tabsList()[app_view_model.application_data.tabs.tabsList().length-1]);
     }
 }

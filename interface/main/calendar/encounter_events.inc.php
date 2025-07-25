@@ -305,6 +305,7 @@ function update_event($eid)
         $args['facility'] = $origEvent['pc_facility'];
         $args['billing_facility'] = $origEvent['pc_billing_location'];
         $args['mobile_number'] = $origEvent['mobile_number'];
+        $args['alternative_mobile_number'] = $origEvent['alternative_mobile_number'];
         php($args, 'payment');
 }
 //===============================================================================
@@ -324,8 +325,8 @@ function check_event_exist($eid)
     $pc_recurrspec_array = unserialize($origEvent['pc_recurrspec'], ['allowed_classes' => false]);
     $origEvent = sqlStatement(
         "SELECT * FROM openemr_postcalendar_events WHERE pc_eid != ? and pc_catid=? and pc_aid=? " .
-        "and pc_pid=? and pc_eventDate=? and pc_startTime=? and pc_endTime=? and pc_facility=? and pc_billing_location=? and mobile_number=?",
-        array($eid,$pc_catid,$pc_aid,$pc_pid,$pc_eventDate,$pc_startTime,$pc_endTime,$pc_facility,$pc_billing_location,$mobile_number)
+        "and pc_pid=? and pc_eventDate=? and pc_startTime=? and pc_endTime=? and pc_facility=? and pc_billing_location=? and mobile_number=? and alternative_mobile_number=?",
+        array($eid,$pc_catid,$pc_aid,$pc_pid,$pc_eventDate,$pc_startTime,$pc_endTime,$pc_facility,$pc_billing_location,$mobile_number, $alternative_mobile_number)
     );
     if (sqlNumRows($origEvent) > 0) {
         $origEventRow = sqlFetchArray($origEvent);
@@ -362,15 +363,15 @@ function php($args, $from = 'general')
             "pc_catid, pc_multiple, pc_aid, pc_pid, pc_gid, pc_title, pc_time, pc_hometext, " .
             "pc_informant, pc_eventDate, pc_endDate, pc_duration, pc_recurrtype, " .
             "pc_recurrspec, pc_startTime, pc_endTime, pc_alldayevent, " .
-            "pc_apptstatus, pc_prefcatid, pc_location, pc_eventstatus, pc_sharing, pc_facility,pc_billing_location,pc_room , mobile_number" .
-            ") VALUES (?,?,?,?,?,?,NOW(),?,?,?,?,?,?,?,?,?,?,?,?,?,1,1,?,?,?,?)",
+            "pc_apptstatus, pc_prefcatid, pc_location, pc_eventstatus, pc_sharing, pc_facility,pc_billing_location,pc_room , mobile_number, alternative_mobile_number'" .
+            ") VALUES (?,?,?,?,?,?,NOW(),?,?,?,?,?,?,?,?,?,?,?,?,?,1,1,?,?,?,?,?)",
             array($args['form_category'],(isset($args['new_multiple_value']) ? $args['new_multiple_value'] : ''),$args['form_provider'],$form_pid,$form_gid,
             $args['form_title'],$args['form_comments'],$_SESSION['authUserID'],$args['event_date'],
             fixDate($args['form_enddate']),$args['duration'],$pc_recurrtype,serialize($args['recurrspec']),
             $args['starttime'],$args['endtime'],$args['form_allday'],$args['form_apptstatus'],$args['form_prefcat'],
-            $args['locationspec'],(int)$args['facility'],(int)$args['billing_facility'],$form_room, $args['mobile_number'])
+            $args['locationspec'],(int)$args['facility'],(int)$args['billing_facility'],$form_room, $args['mobile_number'], $args['alternative_mobile_number'])
         );
-
+         
             //Manage tracker status.
         if (!empty($form_pid)) {
             manage_tracker_status($args['event_date'], $args['starttime'], $pc_eid, $form_pid, $_SESSION['authUser'], $args['form_apptstatus'], $args['form_room']);
@@ -385,17 +386,17 @@ function php($args, $from = 'general')
             "pc_catid, pc_multiple, pc_aid, pc_pid, pc_title, pc_time, " .
             "pc_eventDate, pc_endDate, pc_duration, pc_recurrtype, " .
             "pc_recurrspec, pc_startTime, pc_endTime, pc_alldayevent, " .
-            "pc_apptstatus, pc_prefcatid, pc_location, pc_eventstatus, pc_sharing, pc_facility,pc_billing_location,mobile_number" .
-            ") VALUES (?,?,?,?,?,NOW(),?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+            "pc_apptstatus, pc_prefcatid, pc_location, pc_eventstatus, pc_sharing, pc_facility,pc_billing_location,mobile_number, alternative_mobile_number" .
+            ") VALUES (?,?,?,?,?,NOW(),?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?.?,?)",
             array($args['form_category'],$args['new_multiple_value'],$args['form_provider'],$form_pid,$args['form_title'],
                 $args['event_date'],$args['form_enddate'],$args['duration'],$pc_recurrtype,serialize($args['recurrspec']),
                 $args['starttime'],$args['endtime'],$args['form_allday'],$args['form_apptstatus'],$args['form_prefcat'], $args['locationspec'],
             1,
             1,
             (int)$args['facility'],
-            (int)$args['billing_facility'], $args('mobile_number'))
+            (int)$args['billing_facility'], $args('mobile_number'), $args('alternative_mobile_number'))
         );
-    }
+    }       
 }
 //================================================================================================================
 /**

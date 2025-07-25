@@ -346,7 +346,7 @@ function imdeleted(EncounterId) {
 
 // Called to open the data entry form a specified encounter form instance.
 function openEncounterForm(formdir, formname, formid) {
-  var url = <?php echo js_escape($rootdir); ?> + '/patient_file/encounter/view_form.php?formname=' +
+  var url = <?php echo js_escape($rootdir); ?> + '/patient_file/encounter//.php?formname=' +
       encodeURIComponent(formdir) + '&id=' + encodeURIComponent(formid);
   if (formdir == 'newpatient' || !parent.twAddFrameTab) {
     top.restoreSession();
@@ -788,6 +788,7 @@ echo $t->render('encounter/forms/navbar.html.twig', [
                             <span class="text"><?php echo xlt('Summary of Care Provided?') ?></span>
                         </td>
                     </tr>
+                    
                 </table>
             <?php } ?>
         </div>
@@ -936,7 +937,7 @@ if (
             ) {
                 echo "<a class='btn btn-text btn-sm form-edit-button btn-edit' " .
                     "id='form-edit-button-" . attr($formdir) . "-" . attr($iter['id']) . "' " .
-                    "href='#' " .
+                    "href='# ' " .
                     "title='" . xla('Edit this form') . "' " .
                     "onclick=\"return openEncounterForm(" . attr_js($formdir) . ", " .
                     attr_js($form_name) . ", " . attr_js($iter['form_id']) . ")\">";

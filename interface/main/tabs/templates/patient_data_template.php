@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Patient data template.
  *
@@ -19,7 +18,6 @@
  * @copyright Copyright (c) 2020 Tyler Wrenn <tyler@tylerwrenn.com>
  * @license   https://github.com/openemr/openemr/blob/master/LICENSE GNU General Public License 3
  */
-
 ?>
 <?php
 
@@ -124,7 +122,7 @@ switch ($search_any_type) {
                 <div class="btn-group dropdown">
                 <button class="btn btn-secondary btn-sm dropdown-toggle"
                     type="button" id="pastEncounters"
-                    data-toggle="dropdown"
+                    data-toggle="dropdown"  
                     aria-haspopup="true"
                     aria-expanded="true">
                     <?php echo xlt("Select Encounter"); ?>&nbsp;
@@ -140,7 +138,7 @@ switch ($search_any_type) {
                             <i class="fa fa-rotate-left"></i>&nbsp;<?php echo xlt("Review"); ?>
                         </a>
                     </li>
-                    <!-- /ko -->
+                    <!-- /ko -->    
                 </ul>
             </div>
                 <a class="btn btn-sm btn-secondary" data-bind="click: clickNewEncounter" href="#"
@@ -149,6 +147,9 @@ switch ($search_any_type) {
                 </a>
             </div>
 
+
+
+
             <!-- ko if: encounterArray().length > 0 -->
             <div class="patientCurrentEncounter mt-2 d-block">
                     <span><?php echo xlt("Open Encounter"); ?>:</span>
@@ -156,7 +157,7 @@ switch ($search_any_type) {
                     <a data-bind="click: refreshEncounter" href="#">
                         <span data-bind="text:selectedEncounter().date()"></span>
                         (<span data-bind="text:selectedEncounter().id()"></span>)
-                    </a>
+                    </a>    
                     <!-- /ko -->
                     <!-- ko if:!selectedEncounter() -->
                     <?php echo xlt("None{{Encounter}}") ?>
@@ -175,6 +176,9 @@ switch ($search_any_type) {
             <span class="mr-auto">
                 <a class="btn btn-secondary btn-sm" href="#" data-bind="click: viewMessages"
                     title="<?php echo xla("View Messages"); ?>">
+                    
+                          <a class="btn btn-secondary btn-sm" href="#" data-bind="click: viewMessages"
+                    title="<?php echo xla("Patient Details"); ?>">
                     <i class="fa fa-envelope"></i>&nbsp;<span class="badge badge-primary" style="display:inline" data-bind="text: messages()"></span>
                 </a>
             </span>

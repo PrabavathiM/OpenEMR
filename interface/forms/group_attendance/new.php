@@ -238,17 +238,13 @@ if ($form_id) {//If editing a form or the form already exists (inwhich case will
             parent.closeTab(window.name, false);
         });
 
-
-
     });
-
     /* For patient popup search */
     function setpatient(pid, lname, fname, dob){
         $('.new_patient_id').val(pid);
         $('.new_patient').val(fname + " " + lname);
     }
-
-
+    
 </script>
 </div>
 <?php

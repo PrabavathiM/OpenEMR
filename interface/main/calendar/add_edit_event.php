@@ -624,6 +624,7 @@ $eventDispatcher = $GLOBALS['kernel']->getEventDispatcher();
                             "pc_time = NOW(), " .
                             "pc_hometext = '" . add_escape_custom($_POST['form_comments']) . "', " .
                             "mobile_number = '" . add_escape_custom($_POST['mobile_number']) . "', " .
+                            "alternative_mobile_number = '" . add_escape_custom($_POST['alternative_mobile_number']) . "', " .
                             "pc_room = '" . add_escape_custom($_POST['form_room']) . "', " .
                             "pc_informant = '" . add_escape_custom($_SESSION['authUserID']) . "', " .
                             "pc_eventDate = '" . add_escape_custom($event_date) . "', " .
@@ -721,6 +722,7 @@ $eventDispatcher = $GLOBALS['kernel']->getEventDispatcher();
                         "pc_time = NOW(), " .
                         "pc_hometext = '" . add_escape_custom($_POST['form_comments']) . "', " .
                         "mobile_number = '" . add_escape_custom($_POST['mobile_number']) . "', " .
+                        "alternative_mobile_number = '" . add_escape_custom($_POST['alternative_mobile_number']) . "', " .
                         "pc_room = '" . add_escape_custom($_POST['form_room']) . "', " .
                         "pc_informant = '" . add_escape_custom($_SESSION['authUserID']) . "', " .
                         "pc_eventDate = '" . add_escape_custom($event_date) . "', " .
@@ -813,6 +815,8 @@ $eventDispatcher = $GLOBALS['kernel']->getEventDispatcher();
     $patienttitle = array();
     $pcroom = "";
     $mobile_number = "";
+    $alternative_mobile_number="";
+    // print_r($alternative_mobile_number); die();
     $hometext = "";
     $row = array();
     $informant = "";
@@ -868,6 +872,8 @@ $eventDispatcher = $GLOBALS['kernel']->getEventDispatcher();
         $pcroom = $row['pc_room'];
 
         $mobile_number = $row['mobile_number'];
+        $alternative_mobile_number = $row['alternative_mobile_number'];
+        // print_r($alternative_mobile_number); die();
 
         $hometext = $row['pc_hometext'];
         if (substr($hometext, 0, 6) == ':text:') {
@@ -1747,11 +1753,14 @@ $eventDispatcher = $GLOBALS['kernel']->getEventDispatcher();
                     <!-- added mobile number -->
                     <div class="col-sm form-group">
                         <label for='mobile_number'><?php echo xlt('Mobile Number'); ?>:</label>
-                        <input class="form-control" type="tel"  maxlength="10" name='mobile_number' id='mobile_number' value='<?php echo attr($mobile_number) ; ?>' title='<?php echo xla('mobile_number'); ?>' />
+                        <input class="form-control" type="tel"  maxlength="10" name='mobile_number' id='mobile_number' value='<?php echo attr($mobile_number) ; ?>' title='<?php echo xla('mobile number'); ?>' />
                     </div>
                     
-
-
+                     <div class="col-sm form-group">
+                        <label for='alternative_mobile_number'><?php echo xlt('alternative mobile number'); ?>:</label>
+                        <input class="form-control" type="tel"  maxlength="10" name='alternative_mobile_number' id='alternative_mobile_number' value='<?php echo attr($alternative_mobile_number) ; ?>' title='<?php echo xla('alternative mobile number'); ?>' />
+    
+                    </div>
 
                 <?php } ?>
             </div><!-- status row -->
@@ -1987,7 +1996,6 @@ $eventDispatcher = $GLOBALS['kernel']->getEventDispatcher();
             }
             return false;
         }
-
         function SubmitForm() {
             var f = document.forms[0];
             <?php if (!($GLOBALS['select_multi_providers']) && empty($_GET['prov'])) { // multi providers appt is not supported by check slot avail window, so skip. && is not provider tab. 

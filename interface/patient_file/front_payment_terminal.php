@@ -163,10 +163,10 @@ $total = $_GET['total'] ?? null;
                     alert(data.error);
                     return false;
                 }
-                opener.document.getElementById("check_number").value = data.id;
-                opener.$("[name='form_save']").click();
-                dlgclose();
-            });
+                    opener.document.getElementById("check_number").value = data.id;
+                    opener.$("[name='form_save']").click();
+                    dlgclose();
+                });
         }
 
         function cancel(paymentIntentId) {

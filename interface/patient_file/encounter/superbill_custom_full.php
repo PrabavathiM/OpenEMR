@@ -162,7 +162,7 @@ if (isset($mode) && $thisauthwrite) {
             $code = $row['code'];
             $code_text = $row['code_text'];
             $code_type = $code_types[$code_type_name_external]['id'];
-            $modifier = $row['modifier'];
+            $modifier = $row['modifier'];   
             // $units        = $row['units'];
             $superbill = $row['superbill'];
             $related_code = $row['related_code'];

@@ -349,7 +349,7 @@ $singleCodeSelection = $_GET['singleCodeSelection'] ?? null;
         note by sjp: table-responsive does not go in table but the container div!
         !-->
         <table id="my_data_table" class="table table-striped table-hover table-sm w-100">
-            <thead>
+            <thead> 
             <tr>
                 <th><?php echo xlt('Code'); ?></th>
                 <th><?php echo xlt('Description'); ?></th>

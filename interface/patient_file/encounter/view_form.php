@@ -47,9 +47,11 @@ if (!str_starts_with($_GET["formname"], 'LBF')) {
 
 $formLocator = new FormLocator();
 $file = $formLocator->findFile($_GET['formname'], $pageName, 'load_form.php');
+// print($file);
 require_once($file);
 
 $id = $clean_id;
+// print($id); exit;
 if (!empty($GLOBALS['text_templates_enabled'])) { ?>
     <script src="<?php echo $GLOBALS['web_root'] ?>/library/js/CustomTemplateLoader.js"></script>
 <?php } ?>

@@ -69,6 +69,7 @@ if ($GLOBALS['kernel']->getEventDispatcher() instanceof EventDispatcher) {
 }
 // instantiate the locator at the beginning so our file caching can be re-used.
 $formLocator = new FormLocator();
+// print($formLocator); exit;
 ?>
 <!DOCTYPE html>
 <html>
@@ -346,7 +347,7 @@ function imdeleted(EncounterId) {
 
 // Called to open the data entry form a specified encounter form instance.
 function openEncounterForm(formdir, formname, formid) {
-  var url = <?php echo js_escape($rootdir); ?> + '/patient_file/encounter//.php?formname=' +
+  var url = <?php echo js_escape($rootdir); ?> + '/patient_file/encounter/view_form.php?formname=' +
       encodeURIComponent(formdir) + '&id=' + encodeURIComponent(formid);
   if (formdir == 'newpatient' || !parent.twAddFrameTab) {
     top.restoreSession();
@@ -410,6 +411,7 @@ function refreshVisitDisplay() {
 <script>
 
 function openNewForm(sel, label) {
+    alert
     top.restoreSession();
     let FormNameValueArray = sel.split('formname=');
     if (FormNameValueArray[1] == 'newpatient') {
@@ -523,6 +525,7 @@ function findPosY(obj) {
 require_once("$srcdir/registry.inc.php");
 
 $reg = getFormsByCategory();
+// print($reg); exit;
 $old_category = '';
 $DivId = 1;
 
@@ -541,10 +544,13 @@ if (
 
 
 // Convert the flat list of menu items into a multi-dimensional array based on the category
-// decide what will be displayed (name or nickname)
+// decide what will be displayed (name or nickname).....
 $eventDispatcher->addListener(EncounterMenuEvent::MENU_RENDER, function (EncounterMenuEvent $menuEvent) {
+
     $menuArray = $menuEvent->getMenuData();
+    // print_r($menuArray); exit;    //o/p  arrary()
     $reg = getFormsByCategory();
+    // print_r($reg); exit;    //o/p array format data display
     foreach ($reg as $item) {
         $tmp = explode('|', $item['aco_spec']);
         if (!empty($tmp[1])) {
@@ -568,6 +574,9 @@ $eventDispatcher->addListener(EncounterMenuEvent::MENU_RENDER, function (Encount
 
 // Zend Module hooks
 $eventDispatcher->addListener(EncounterMenuEvent::MENU_RENDER, function (EncounterMenuEvent $menuEvent) {
+
+    // print($menuEvent->getMenuData());exit;
+
     $module_query = sqlStatement("SELECT msh.*, ms.menu_name, ms.path, m.mod_ui_name, m.type
         FROM modules_hooks_settings AS msh
         LEFT OUTER JOIN modules_settings AS ms ON obj_name=enabled_hooks AND ms.mod_id=msh.mod_id
@@ -579,7 +588,7 @@ $eventDispatcher->addListener(EncounterMenuEvent::MENU_RENDER, function (Encount
         ORDER BY mod_id");
 
     $menuData = $menuEvent->getMenuData();
-
+    //print_r($menuData);exit;      //o/p array format data display
     while ($row = sqlFetchArray($module_query)) {
         $_cat = $row['mod_ui_name'];
         if ($row['type'] == 0) {
@@ -623,6 +632,8 @@ if ($result['squad'] && !AclMain::aclCheckCore('squads', $result['squad'])) {
 
 $encounterMenuEvent = new EncounterMenuEvent();
 $menu = $eventDispatcher->dispatch($encounterMenuEvent, EncounterMenuEvent::MENU_RENDER);
+// print_r($menu->getMenuData());exit;
+
 
 $twig = new TwigContainer(null, $GLOBALS['kernel']);
 $t = $twig->getTwig();
@@ -660,7 +671,7 @@ echo $t->render('encounter/forms/navbar.html.twig', [
             } else { // if no aco is set for category
                 $authPostCalendarCategory = true;
                 $authPostCalendarCategoryWrite = true;
-            }
+            }   
 
             // Check for no access to the encounter's sensitivity level.
             $sensitivity = (new EncounterService())->getSensitivity($pid, $encounter);
@@ -684,8 +695,9 @@ echo $t->render('encounter/forms/navbar.html.twig', [
 <div class='encounter-summary-column'>
 <?php if ($esign->isLogViewable()) {
     $esign->renderLog();
-} ?>
-</div>
+    } ?>
+    </div>
+
 <div class='encounter-summary-column'>
 <?php if ($GLOBALS['enable_amc_prompting']) { ?>
     <div class="float-right border border-dark mb-2">
@@ -892,7 +904,7 @@ if (
 
         $acl_groups = AclMain::aclCheckCore("groups", "glog", false, 'write') ? true : false;
         $user = (new UserService())->getUserByUsername($iter['user']);
-
+        
         $form_name = ($formdir == 'newpatient') ? xl('Visit Summary') : xl_form_title($iter['form_name']);
 
         // Create the ESign instance for this form
@@ -927,23 +939,23 @@ if (
                 <div class='form_header_controls btn-group' role='group'>
         HTML;
 
-        // If the form is locked, it is no longer editable
-        if ($esign->isLocked()) {
-            echo "<a href='#' class='btn btn-text btn-sm form-edit-button-locked' id='form-edit-button-" . attr($formdir) . "-" . attr($iter['id']) . "'><i class='fa fa-lock fa-fw'></i>&nbsp;" . xlt('Locked') . "</a>";
-        } else {
-            if (
-                (!$aco_spec || AclMain::aclCheckCore($aco_spec[0], $aco_spec[1], '', 'write') and $is_group == 0 and $authPostCalendarCategoryWrite)
-                or (((!$aco_spec || AclMain::aclCheckCore($aco_spec[0], $aco_spec[1], '', 'write')) and $is_group and AclMain::aclCheckCore("groups", "glog", false, 'write')) and $authPostCalendarCategoryWrite)
-            ) {
-                echo "<a class='btn btn-text btn-sm form-edit-button btn-edit' " .
-                    "id='form-edit-button-" . attr($formdir) . "-" . attr($iter['id']) . "' " .
-                    "href='# ' " .
-                    "title='" . xla('Edit this form') . "' " .
-                    "onclick=\"return openEncounterForm(" . attr_js($formdir) . ", " .
-                    attr_js($form_name) . ", " . attr_js($iter['form_id']) . ")\">";
-                echo "" . xlt('Edit') . "</a>";
+            // If the form is locked, it is no longer editable
+            if ($esign->isLocked()) {
+                echo "<a href='#' class='btn btn-text btn-sm form-edit-button-locked' id='form-edit-button-" . attr($formdir) . "-" . attr($iter['id']) . "'><i class='fa fa-lock fa-fw'></i>&nbsp;" . xlt('Locked') . "</a>";
+            } else {
+                if (
+                    (!$aco_spec || AclMain::aclCheckCore($aco_spec[0], $aco_spec[1], '', 'write') and $is_group == 0 and $authPostCalendarCategoryWrite)
+                    or (((!$aco_spec || AclMain::aclCheckCore($aco_spec[0], $aco_spec[1], '', 'write')) and $is_group and AclMain::aclCheckCore("groups", "glog", false, 'write')) and $authPostCalendarCategoryWrite)
+                ) {
+                    echo "<a class='btn btn-text btn-sm form-edit-button btn-edit' " .
+                        "id='form-edit-button-" . attr($formdir) . "-" . attr($iter['id']) . "' " .
+                        "href='# ' " .
+                        "title='" . xla('Edit this form') . "' " .
+                        "onclick=\"return openEncounterForm(" . attr_js($formdir) . ", " .
+                        attr_js($form_name) . ", " . attr_js($iter['form_id']) . ")\">";
+                    echo "" . xlt('Edit') . "</a>";
+                }
             }
-        }
 
         if (($esign->isButtonViewable() and $is_group == 0 and $authPostCalendarCategoryWrite) or ($esign->isButtonViewable() and $is_group and AclMain::aclCheckCore("groups", "glog", false, 'write') and $authPostCalendarCategoryWrite)) {
             if (!$aco_spec || AclMain::aclCheckCore($aco_spec[0], $aco_spec[1], '', 'write')) {
@@ -951,7 +963,7 @@ if (
             }
         }
 
-        if (substr($formdir, 0, 3) == 'LBF') {
+        if (substr($formdir, 0, 3) == 'LBF') {  
             // A link for a nice printout of the LBF
             echo "<a target='_blank' " .
             "href='$rootdir/forms/LBF/printable.php?"   .

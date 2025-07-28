@@ -8,7 +8,7 @@
 // of the License, or (at your option) any later version.
 
 // Disable PHP timeout.  This will not work in safe mode.
-ini_set('max_execution_time', '0');
+ini_set('max_execution_time', '0'); 
 
 $ignoreAuth = true; // no login required
 

@@ -16,7 +16,7 @@ function registerForm($directory, $sql_run = 0, $unpackaged = 1, $state = 0)
             $category = "Miscellaneous";
         }
 
-        return sqlInsert("insert into registry set
+        return sqlInsert("insert into registry set  
 			name=?,
 			state=?,
 			directory=?,

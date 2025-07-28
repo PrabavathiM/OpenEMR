@@ -21,7 +21,7 @@ use OpenEMR\Tabs\TabsWrapper;
 use OpenEMR\Core\Header;
 
 if (isset($_GET["set_encounter"])) {
-    // The billing page might also be setting a new pid.
+    // The billing page might also be setting a new pid.    
     if (isset($_GET["set_pid"])) {
         $set_pid = $_GET["set_pid"];
     } elseif (isset($_GET["pid"])) {
@@ -35,6 +35,7 @@ if (isset($_GET["set_encounter"])) {
     }
 
     setencounter($_GET["set_encounter"]);
+ 
 }
 
 $tabset = new TabsWrapper('enctabs');
@@ -55,7 +56,9 @@ if (!empty($_GET['formname'])) {
 
 // This is for making the page title which will be picked up as the tab label.
 $dateres = getEncounterDateByEncounter($encounter);
+//print($dateres); exit;
 $encounter_date = date("Y-m-d", strtotime($dateres["date"]));
+// print($encounter_date); exit;
 ?>
 <!DOCTYPE html>
 <html>

@@ -29,6 +29,7 @@ if (!AclMain::aclCheckCore('admin', 'super')) {
 
 // allow a custom 'delete' form
 $deleteform = $incdir . "/forms/" . $_REQUEST["formname"] . "/delete.php";
+// print_r($deleteform); exit;
 
 check_file_dir_name($_REQUEST["formname"]);
 
@@ -41,6 +42,7 @@ if (file_exists($deleteform)) {
 
 // when the Cancel button is pressed, where do we go?
 $returnurl = 'forms.php';
+//  print_r($returnurl); exit;
 
 if (!empty($_POST['confirm'])) {
     if (!CsrfUtils::verifyCsrfToken($_POST["csrf_token_form"])) {
@@ -48,17 +50,18 @@ if (!empty($_POST['confirm'])) {
     }
 
     if ($_POST['id'] != "*" && $_POST['id'] != '') {
-      // set the deleted flag of the indicated form
+        // print_r($_POST['id']); exit;
+        // set the deleted flag of the indicated form
         $sql = "update forms set deleted=1 where id=?";
         sqlStatement($sql, array($_POST['id']));
-      // Delete the visit's "source=visit" attributes that are not used by any other form.
+        // Delete the visit's "source=visit" attributes that are not used by any other form.
         sqlStatement(
             "DELETE FROM shared_attributes WHERE " .
-            "pid = ? AND encounter = ? AND field_id NOT IN (" .
-            "SELECT lo.field_id FROM forms AS f, layout_options AS lo WHERE " .
-            "f.pid = ? AND f.encounter = ? AND f.formdir LIKE 'LBF%' AND " .
-            "f.deleted = 0 AND " .
-            "lo.form_id = f.formdir AND lo.source = 'E' AND lo.uor > 0)",
+                "pid = ? AND encounter = ? AND field_id NOT IN (" .
+                "SELECT lo.field_id FROM forms AS f, layout_options AS lo WHERE " .
+                "f.pid = ? AND f.encounter = ? AND f.formdir LIKE 'LBF%' AND " .
+                "f.deleted = 0 AND " .
+                "lo.form_id = f.formdir AND lo.source = 'E' AND lo.uor > 0)",
             array($pid, $encounter, $pid, $encounter)
         );
     }
@@ -67,6 +70,7 @@ if (!empty($_POST['confirm'])) {
 
     // redirect back to the encounter
     $address = "{$GLOBALS['rootdir']}/patient_file/encounter/$returnurl";
+    // print_r($address); exit;
     echo "\n<script>top.restoreSession();window.location='$address';</script>\n";
     exit;
 }
@@ -83,7 +87,7 @@ if (!empty($_POST['confirm'])) {
         <div class="row">
             <div class="col-12">
                 <h2><?php echo xlt('Delete Encounter Form'); ?></h2>
-                <form method="post" action="<?php echo $rootdir;?>/patient_file/encounter/delete_form.php" name="my_form" id="my_form">
+                <form method="post" action="<?php echo $rootdir; ?>/patient_file/encounter/delete_form.php" name="my_form" id="my_form">
                     <input type="hidden" name="csrf_token_form" value="<?php echo attr(CsrfUtils::collectCsrfToken()); ?>" />
                     <?php
                     // output each GET variable as a hidden form input
@@ -94,16 +98,16 @@ if (!empty($_POST['confirm'])) {
                     <input type="hidden" id="confirm" name="confirm" value="1" />
 
                     <p>
-                    <?php
-                    $formdir = $_GET["formname"] ?? '';
-                    $form_id = $_GET["id"] ?? 0;
-                    if ($formdir == 'questionnaire_assessments') {
-                        $formName = sqlQuery("SELECT form_name FROM forms WHERE id = ? AND deleted = 0", array($form_id));
-                    } else {
-                        $formName = getFormNameByFormdir($formdir);
-                    }
-                    echo xlt('You are about to delete the following form from this encounter') . ': ' . text(xl_form_title($formName["form_name"]));
-                    ?>
+                        <?php
+                        $formdir = $_GET["formname"] ?? '';
+                        $form_id = $_GET["id"] ?? 0;
+                        if ($formdir == 'questionnaire_assessments') {
+                            $formName = sqlQuery("SELECT form_name FROM forms WHERE id = ? AND deleted = 0", array($form_id));
+                        } else {
+                            $formName = getFormNameByFormdir($formdir);
+                        }
+                        echo xlt('You are about to delete the following form from this encounter') . ': ' . text(xl_form_title($formName["form_name"]));
+                        ?>
                     </p>
                     <div class="btn-group">
                         <button type="button" class="btn btn-danger btn-delete" id="confirmbtn" name="confirmbtn" value='<?php echo xla('Yes, Delete this form'); ?>'>
@@ -117,22 +121,27 @@ if (!empty($_POST['confirm'])) {
             </div>
         </div>
     </div>
-<script>
-// jQuery stuff to make the page a little easier to use
+    <script>
+        // jQuery stuff to make the page a little easier to use
 
-$(function () {
-    $("#confirmbtn").on("click", function() { return ConfirmDelete(); });
-    $("#cancel").on("click", function() { location.href=<?php echo js_escape("$rootdir/patient_file/encounter/$returnurl");?>; });
-});
+        $(function() {
+            $("#confirmbtn").on("click", function() {
+                return ConfirmDelete();
+            });
+            $("#cancel").on("click", function() {
+                location.href = <?php echo js_escape("$rootdir/patient_file/encounter/$returnurl"); ?>;
+            });
+        });
 
-function ConfirmDelete() {
-    if (confirm(<?php echo xlj('This action cannot be undone. Are you sure you wish to delete this form?'); ?>)) {
-        top.restoreSession();
-        $("#my_form").submit();
-        return true;
-    }
-    return false;
-}
-</script>
+        function ConfirmDelete() {
+            if (confirm(<?php echo xlj('This action cannot be undone. Are you sure you wish to delete this form?'); ?>)) {
+                top.restoreSession();
+                $("#my_form").submit();
+                return true;
+            }
+            return false;
+        }
+    </script>
 </body>
+
 </html>

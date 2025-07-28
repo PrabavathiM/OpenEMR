@@ -30,7 +30,7 @@ class FormLocator
             $logger = new SystemLogger();
         }
         $this->logger = $logger;
-    // AI GENERATED CODE: HEADER START
+        // AI GENERATED CODE: HEADER START
         $this->fileRoot = $GLOBALS['fileroot'];
     }
 

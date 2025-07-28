@@ -15,7 +15,7 @@
 require_once(dirname(__FILE__) . '/../../globals.php');
 require_once($GLOBALS["srcdir"] . "/api.inc.php");
 
-function clinical_instructions_report($pid, $encounter, $cols, $id)
+function doctor_custom_form_report($pid, $encounter, $cols, $id)
 {
     $count = 0;
     $data = formFetch("doctor", $id);
@@ -26,7 +26,7 @@ function clinical_instructions_report($pid, $encounter, $cols, $id)
                 <td align='center' style='border:1px solid #ccc;padding:4px;'><span class=bold><?php echo xlt('Instructions'); ?></span></td>
             </tr>
             <tr>
-                <td style='border:1px solid #ccc;padding:4px;'><span class=text><?php echo nl2br(text($data['instruction'])); ?></span></td>
+                <td style='border:1px solid #ccc;padding:4px;'><span class=text><?php echo nl2br(text($data['doctor_instruction'])); ?></span></td>
             </tr>
         </table>
         <?php

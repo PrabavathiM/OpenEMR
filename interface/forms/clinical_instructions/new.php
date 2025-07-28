@@ -17,12 +17,18 @@ require_once("$srcdir/api.inc.php");
 require_once("$srcdir/patient.inc.php");
 require_once("$srcdir/options.inc.php");
 
+use Laminas\Db\Sql\Insert;
 use OpenEMR\Common\Csrf\CsrfUtils;
 use OpenEMR\Core\Header;
 
 $returnurl = 'encounter_top.php';
+// print('test1'); exit;
 $formid = (int) (isset($_GET['id']) ? $_GET['id'] : 0);
+// print($formid); exit;
 $check_res = $formid ? formFetch("form_clinical_instructions", $formid) : array();
+//  print($check_res); exit;
+
+
 ?>
 <html>
     <head>
@@ -50,9 +56,9 @@ $check_res = $formid ? formFetch("form_clinical_instructions", $formid) : array(
                                 <button type="submit" onclick='top.restoreSession()' class="btn btn-primary btn-save"><?php echo xlt('Save'); ?></button>
                                 <button type="button" class="btn btn-secondary btn-cancel" onclick="top.restoreSession(); parent.closeTab(window.name, false);"><?php echo xlt('Cancel');?></button>
                             </div>
-                        </div>
+                        </div> 
                     </form>
-                </div>
+                </div>  
             </div>
         </div>
     </body>

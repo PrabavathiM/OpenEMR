@@ -27,9 +27,9 @@ use OpenEMR\Common\Csrf\CsrfUtils;
     }
 
     $formid = (int) ($_GET['id'] ?? 0);
-    $doctor_instruction = trim($_POST["doctor_instruction"] ?? '');
-    $doctor_instruction = preg_replace('/[\x00-\x1F\x7F]/u', '', $doctor_instruction);
-    $doctor_instruction = mb_convert_encoding($doctor_instruction, 'UTF-8', 'UTF-8');
+    $doctor_instruction = $_POST["doctor_instruction"] ?? '';
+    // $doctor_instruction = preg_replace('/[\x00-\x1F\x7F]/u', '', $doctor_instruction);
+    // $doctor_instruction = mb_convert_encoding($doctor_instruction, 'UTF-8', 'UTF-8');
 
     $date = date('Y-m-d H:i:s');
     $activity = '1'; 
@@ -53,51 +53,3 @@ use OpenEMR\Common\Csrf\CsrfUtils;
     formFooter();
     exit;
 
-
-// use OpenEMR\Common\Csrf\CsrfUtils;
-
-// if (!CsrfUtils::verifyCsrfToken($_POST["csrf_token_form"])) {
-//     CsrfUtils::csrfNotVerified();
-// }
-
-// if (!$encounter) { // comes from globals.php
-//     die(xlt("Internal error: we do not seem to be in an encounter!"));
-// }
-
-
-// $id = (int) (isset($_GET['id']) ? $_GET['id'] : '');
-// $doctor_instruction = $_POST["doctor_instruction"] ?? '';
-
-
-// if ($id && $id != 0) {
-//     sqlStatement("UPDATE doctor SET doctor_instruction =? WHERE id = ?", array($doctor_instruction, $id));
-// } else {
-//     $newid = sqlInsert(
-//         "INSERT INTO doctor (pid,encounter,user,doctor_instruction) VALUES (?,?,?,?)",
-//         array($pid, $encounter, $_SESSION['authUser'], $doctor_instruction)
-//     );
-//     addForm($encounter, "doctor_custom_form", $newid, "doctor_custom_form", $pid, $userauthorized);
-// }
-
-
-// $formid = (int) (isset($_GET['id']) ? $_GET['id'] : '');
-// //  print_r($id); exit;
-// $doctor_instruction = $_POST["doctor_instruction"];
-// //print_r($instruction); exit;
-
-// if ($formid) {
-//            $query = "UPDATE doctor SET doctor_instruction =? WHERE id = ?";
-//            addForm($encounter, "doctor_custom_form", $query, "doctor_custom_form", $pid, $userauthorized);
-
-//     } else { // If adding a new form...
-        
-//         $newid = sqlInsert(
-//         "INSERT INTO doctor (pid,encounter,user, doctor_instruction, date, activity) VALUES (?,?,?,?,?,?)",
-//         array($pid, $encounter, $_SESSION['authUser'], $doctor_instruction, $date, $activity)
-//     );
-//     addForm($encounter, "doctor_custom_form", $newid, "doctor_custom_form", $pid, $userauthorized);
-//     }
-
-// formHeader("Redirecting....");
-// formJump();
-// formFooter();

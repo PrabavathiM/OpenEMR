@@ -45,7 +45,7 @@
         $query = "INSERT INTO form_clinical_instructions (`pid`, `encounter`, `user`, `instruction`, `date`, `activity`) 
                 VALUES (?, ?, ?, ?, ?, ?)";
         $newid = sqlInsert($query, [$pid, $encounter, $user, $instruction, $date, $activity]);
-        addForm($encounter, "clinical_instructions", $newid, "clinical_instructions", $pid, $user);
+        addForm($encounter, "Clinical Instructions", $newid, "clinical_instructions", $pid, $user);
     }
 
     formHeader("Redirecting...");

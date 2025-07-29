@@ -863,7 +863,6 @@ if (
     $divnos = 1;
     foreach ($result as $iter) {
         $formdir = $iter['formdir'];
-
         // skip forms whose 'deleted' flag is set to 1
         if ($iter['deleted'] == 1) {
             continue;

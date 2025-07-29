@@ -21,15 +21,14 @@
         use OpenEMR\Core\Header;
 
         $returnurl = 'encounter_top.php';
-        // //  print($returnurl); exit;    
+        // print($returnurl); exit;    
         $formid = (int) (isset($_GET['id']) ? $_GET['id'] : 0);
-        // // print($formid); exit;   
-        $check_res = $formid ? formFetch("doctor", $formid) : array();
-        // In your doctor_custom_form/new.php file
+        // print($formid); exit;   
+        $check_res = $formid ? formFetch("doctor_custom_form", $formid) : array();
         ?>
         <html>
             <head>
-                <title><?php echo xlt("Doctor Custom From"); ?></title>
+                <title><?php echo xlt("Medication From"); ?></title>
 
                 <?php Header::setupHeader(); ?>
             </head>

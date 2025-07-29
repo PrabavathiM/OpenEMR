@@ -18,13 +18,13 @@ require_once($GLOBALS["srcdir"] . "/api.inc.php");
 function doctor_custom_form_report($pid, $encounter, $cols, $id)
 {
     $count = 0;
-    $data = formFetch("doctor", $id);
+    $data = formFetch("doctor_custom_form", $id);
     if ($data) {
         ?>
         <table style='border-collapse:collapse;border-spacing:0;width: 100%;'>
             <tr>
                 <td align='center' style='border:1px solid #ccc;padding:4px;'><span class=bold><?php echo xlt('Instructions'); ?></span></td>
-            </tr>
+         </tr>
             <tr>
                 <td style='border:1px solid #ccc;padding:4px;'><span class=text><?php echo nl2br(text($data['doctor_instruction'])); ?></span></td>
             </tr>

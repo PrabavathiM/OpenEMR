@@ -1,5 +1,5 @@
 
-CREATE TABLE IF NOT EXISTS `doctor` (
+CREATE TABLE IF NOT EXISTS `doctor_custom_form` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `pid` bigint(20) DEFAULT NULL,
   `encounter` varchar(255) DEFAULT NULL,

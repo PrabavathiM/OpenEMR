@@ -37,19 +37,18 @@ use OpenEMR\Common\Csrf\CsrfUtils;
 
     if ($formid) {
         // UPDATE existing record
-        $query = "UPDATE doctor SET `doctor_instruction` = ?, `date` = ?, `activity` = ? WHERE `id` = ?";
+        $query = "UPDATE doctor_custom_form SET `doctor_instruction` = ?, `date` = ?, `activity` = ? WHERE `id` = ?";
         sqlStatement($query, [$doctor_instruction, $date, $activity, $formid]);    
         
     } else {
         // INSERT new record
-        $query = "INSERT INTO doctor (`pid`, `encounter`, `user`, `doctor_instruction`, `date`, `activity`) 
+        $query = "INSERT INTO doctor_custom_form (`pid`, `encounter`, `user`, `doctor_instruction`, `date`, `activity`) 
                 VALUES (?, ?, ?, ?, ?, ?)";
         $newid = sqlInsert($query, [$pid, $encounter, $user, $doctor_instruction, $date, $activity]);
-        addForm($encounter, "doctor_custom_form", $newid, "doctor_custom_form", $pid, $user);
+        addForm($encounter, "Doctor Custom Form", $newid, "doctor_custom_form", $pid, $user);
     }
 
     formHeader("Redirecting...");
     formJump();
     formFooter();
     exit;
-

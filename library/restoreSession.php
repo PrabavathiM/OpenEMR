@@ -18,7 +18,7 @@
 
 use OpenEMR\Common\Csrf\CsrfUtils;
 
-$scparams = session_get_cookie_params();
+$scparams = session_get_cookie_params();    
 ?>
 // login.php makes sure the session ID captured here is different for each
 // new login.  We maintain it here because most browsers do not have separate

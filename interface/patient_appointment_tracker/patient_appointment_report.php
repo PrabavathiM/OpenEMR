@@ -1,6 +1,6 @@
 <?php
 require_once "../globals.php";
-require_once("$srcdir/sql.inc");
+require_once("  /sql.inc");
 require_once "$srcdir/patient.inc.php";
 require_once "$srcdir/options.inc.php";
 require_once "$srcdir/patient_tracker.inc.php";
@@ -27,7 +27,6 @@ $selectedDate = $_POST['appointment_date'] ?? date('Y-m-d');
     <title><?php echo xlt("Patient Appointment Tracker"); ?></title>
 </head>
 <body class="container mt-3">
-
 <h3><?php echo xlt("Patient Appointment Tracker"); ?></h3>
 
 <form method="POST" class="form-inline mb-3">

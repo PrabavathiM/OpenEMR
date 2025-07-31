@@ -2300,7 +2300,7 @@
   "label": "Patient Appointment Tracker",
   "menu_id": "appt_report_tab",
   "target": "pat",
-  "url": "/interface/patient_appointment_tracker/patient_appointment_tracker.php?skip_timeout_reset=1",
+  "url": "/interface/patient_appointment_tracker/patient_appointment_report.php?skip_timeout_reset=1",
   "children": [],
   "requirement": 0,
   "acl_req": ["patients", "appt"],

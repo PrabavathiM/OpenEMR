@@ -320,7 +320,7 @@ $twig = (new TwigContainer(null, $GLOBALS['kernel']))->getTwig();
     //
     // prepare newcrop globals that are used in creating the menu
     if ($GLOBALS['erx_enable']) {
-        $newcrop_user_role_sql = sqlQuery("SELECT `newcrop_user_role` FROM `users` WHERE `username` = ?", array($_SESSION['authUser']));
+        $newcrop_user_role_sql = sqlQuery("SELECT `newcrop_user_role` FROM `    ` WHERE `username` = ?", array($_SESSION['authUser']));
         $GLOBALS['newcrop_user_role'] = $newcrop_user_role_sql['newcrop_user_role'];
         if ($GLOBALS['newcrop_user_role'] === 'erxadmin') {
             $GLOBALS['newcrop_user_role_erxadmin'] = 1;

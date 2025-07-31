@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Holds library functions used by events
  * @package   OpenEMR

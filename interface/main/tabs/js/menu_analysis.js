@@ -16,7 +16,7 @@ targets['Administration']='adm';
 targets['Reports']='rep';
 targets['Miscellaneous']='msc';
 targets['Patients']='lst';
-targets['Patient Appointment Tracker'] = 'pat';  // ✅ no space at end
+targets['Patient Appointment Report'] = 'par';  // ✅ no space at end
 
 // targets['Patient Appointment Tracker'] = 'pat';
 

@@ -2297,13 +2297,13 @@
       "requirement": 0
     } ,
     {
-  "label": "Patient Appointment Tracker",
+  "label": "Patient Appointment Report",
   "menu_id": "appt_report_tab",
-  "target": "pat",
+  "target": "par",
   "url": "/interface/patient_appointment_tracker/patient_appointment_report.php?skip_timeout_reset=1",
   "children": [],
   "requirement": 0,
-  "acl_req": ["patients", "appt"],
+  "acl_req": ["patients", "appt"],    
   "global_req_strict": []
 }
   ]

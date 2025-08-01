@@ -11,7 +11,7 @@ use OpenEMR\Core\Header;
 
 Header::setupHeader();
 
-$patientId = $_SESSION['pid'] ?? null; // Check for logged-in patient
+$patientId = $_SESSION['pid'] ?? null; // Check for current patient
 
 // Default: current date
 $defaultDate = date('Y-m-d');
@@ -31,6 +31,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html>
 <head>
     <title><?php echo xlt("Patient Appointment Report"); ?></title>
+
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.3.2/css/dataTables.jqueryui.css">
 </head>
 <body class="container mt-3">
 
@@ -38,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <?php if ($patientId): ?>
 <form method="POST" class="form-inline mb-3">
-    <input type="hidden" name="csrf_token_form" value="<?php echo attr(CsrfUtils::collectCsrfToken()); ?>" />
+    <input type="hidden" name="csrf_token_form" value="<?php echo attr(CsrfUtils::collectCsrfToken()); ?>">
 
     <label class="mr-2"><?php echo xlt("From Date"); ?>:</label>
     <input type="date" name="from_date" class="form-control mr-3"
@@ -53,29 +56,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <?php
     // Fetch encounters for the logged-in patient
-    // $encQuery = "
-    //     SELECT pid, facility, reason, date
-    //     FROM form_encounter JOIN openemr_postcalendar_events ON form_encounter.encounter = openemr_postcalendar_events.pc_pid 
-    //     WHERE date BETWEEN ? AND ? AND pid = ?
-    //     ORDER BY date DESC
-    // ";
+  
     $encQuery = "
-    SELECT pc_title
-    FROM openemr_postcalendar_events
-    WHERE pc_eventDate BETWEEN ? AND ? AND pc_pid = ?
-    ORDER BY pc_eventDate DESC
+    SELECT openemr_postcalendar_events.pc_time, openemr_postcalendar_events.pc_title, facility.name
+    FROM openemr_postcalendar_events JOIN facility ON openemr_postcalendar_events.pc_facility = facility.id
+    WHERE  openemr_postcalendar_events.pc_pid = ? AND openemr_postcalendar_events.pc_eventDate BETWEEN ? AND ?
+    ORDER BY openemr_postcalendar_events.pc_time DESC
 ";
 
-    $encResults = sqlStatement($encQuery, [$fromDate, $toDate, $patientId]);
+    $encResults = sqlStatement($encQuery, [$patientId, $fromDate, $toDate]);
 
-    if (sqlNumRows($encResults) > 0) {
-        echo "<h5 class='mt-4'>" . xlt("Encounters for Patient ID:") . " " . text($patientId) . "</h5>";
-        echo "<table class='table table-bordered'>
+    if (sqlNumRows($encResults) > 0) {  
+        echo "<h5 class='mt-4'>" . xlt("Patient ID:") . " " . text($patientId) . "</h5>";
+        echo "<table class='table table-bordered' id = 'patient_appointment_report_table'>
                 <thead>
                     <tr>
                         
-                        <th>" . xlt("Facility") . "</th>
+                        <th>" . xlt("Date") . "</th>
                         <th>" . xlt("Category") . "</th>
+                        <th>" . xlt("Facility") . "</th>
+                       
                     </tr>
                 </thead>
                 <tbody>";
@@ -83,8 +83,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         while ($enc = sqlFetchArray($encResults)) {
             echo "<tr>
     
-                    <td>" . text($enc['facility']) . "</td>
-                    <td>" . text($enc['reason']) . "</td>
+                    <td>" . text($enc['pc_time']) . "</td>
+                    <td>" . text($enc['pc_title']) . "</td>
+                    <td>" . text($enc['name']) . "</td>
+                    
                   </tr>";
         }
         echo "</tbody></table>";
@@ -99,5 +101,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 <?php endif; ?>
 
+
+<script src="patient_appointment_report.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+<script src="https://cdn.datatables.net/2.3.2/js/dataTables.js"></script>
+<script src="https://cdn.datatables.net/2.3.2/js/dataTables.jqueryui.js"></script>
 </body>
 </html>

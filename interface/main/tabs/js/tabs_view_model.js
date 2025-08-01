@@ -451,9 +451,9 @@ function openExistingTab(url, name) {
             case '../../../interface/main/messages/messages.php?form_active=1':
                 currTabUrl = webroot_url + '/interface/main/messages/messages.php?form_active=1';
                 break;
-            // case '../../../interface/patient_appointment_tracker/patient_appointment_tracker.php?form_active=1':
-            //     currTabUrl = webroot_url + '/interface/patient_appointment_tracker/patient_appointment_tracker.php?form_active=1';
-            //     break;
+            case '../../../interface/patient_appointment_tracker/patient_appointment_report.php?form_active=1':
+                currTabUrl = webroot_url + '/interface/patient_appointment_tracker/patient_appointment_report.php?form_active=1';
+                break;
         }
         if (url === currTabUrl) {
             currTab.visible(true);

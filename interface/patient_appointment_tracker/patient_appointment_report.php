@@ -52,7 +52,7 @@
 
         <label class="mr-2"><?php echo xlt("To Date"); ?>:</label>
         <input type="date" name="to_date" class="form-control mr-3"
-            value="<?php echo attr($toDate); ?>" required>
+            value="<?php echo attr($toDate); ?>" required>  
 
         <select name="facility" class="form-control" required>
         <option value=""><?php echo xlt("Please Select Facility"); ?></option>

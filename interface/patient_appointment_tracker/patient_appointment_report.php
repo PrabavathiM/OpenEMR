@@ -13,16 +13,12 @@
 
             $patientId = $_SESSION['pid'] ?? null; // Check for current patient
 
-            // Default: current date
-            // $defaultDate = date('Y-m-d');
-
+ 
             // Process form data or use default date
             $fromDate = $_POST['from_date'] ?? '';
             $toDate = $_POST['to_date'] ?? '';
             $facilityList = sqlStatement("SELECT id,name FROM facility");
             $selectedFacility= $_POST['facility'] ?? '';
-            
-      
 
             // CSRF Check
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -72,7 +68,6 @@
                 // Fetch encounters for the logged-in patient
         
                if (!empty($fromDate) && !empty($toDate) && !empty($selectedFacility)) {
-    
     
                 $encQuery = "
                 SELECT openemr_postcalendar_events.pc_eventDate, openemr_postcalendar_events.pc_title, facility.name

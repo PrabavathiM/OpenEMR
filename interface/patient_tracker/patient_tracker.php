@@ -385,6 +385,7 @@ if (!($_REQUEST['flb_table'] ?? null)) {
                         <td class="dehead text-center text-ovr-dark" style="max-width: 150px;">
                             <?php echo xlt('Patient'); ?>
                         </td>
+                        
                         <?php if ($GLOBALS['ptkr_visit_reason'] == '1') { ?>
                             <td class="dehead text-center text-ovr-dark" name="kiosk_hide">
                                 <?php echo xlt('Appt Comment'); ?>
@@ -407,6 +408,7 @@ if (!($_REQUEST['flb_table'] ?? null)) {
                         <td class="dehead text-center text-ovr-dark">
                             <?php echo xlt('Arrive Time'); ?>
                         </td>
+                      
                         <td class="dehead text-center d-block d-sm-none text-ovr-dark">
                             <?php echo xlt('Arrival'); ?>
                         </td>

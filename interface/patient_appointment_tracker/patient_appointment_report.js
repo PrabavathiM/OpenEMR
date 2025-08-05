@@ -1,8 +1,15 @@
 $(document).ready(function(){
 
-    $('#patient_appointment_report_table').DataTable(
+    let table = $('#patient_appointment_report_table').DataTable(
         {
-        lengthMenu: [10] }
+        lengthMenu: [10],
+        dom:'rtip',
+        buttons:['csv']
+    }  
 );
+$('#export_csv').on('click',function(){
+table.button(0).trigger();
 });
+});
+
 

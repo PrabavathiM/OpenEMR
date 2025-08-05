@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 4.5.5, created on 2025-07-14 08:49:35
+/* Smarty version 4.5.5, created on 2025-08-04 08:02:24
   from '/opt/lampp/htdocs/openemr/templates/prescription/general_fragment.html' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '4.5.5',
-  'unifunc' => 'content_6874a87fd3ee77_72575052',
+  'unifunc' => 'content_68904cf033f6c3_86433486',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_6874a87fd3ee77_72575052 (Smarty_Internal_Template $_smarty_tpl) {
+function content_68904cf033f6c3_86433486 (Smarty_Internal_Template $_smarty_tpl) {
 $_smarty_tpl->_checkPlugins(array(0=>array('file'=>'/opt/lampp/htdocs/openemr/library/smarty/plugins/function.xlt.php','function'=>'smarty_function_xlt',),));
 if (empty($_smarty_tpl->tpl_vars['prescriptions']->value)) {
 echo smarty_function_xlt(array('t'=>'None'),$_smarty_tpl);?>

@@ -389,7 +389,6 @@ if (!empty($_POST['form_refresh']) || !empty($_POST['form_orderby'])) {
             <?php echo ($form_orderby == "completed") ? " style=\"color: var(--success)\"" : ""; ?>><?php  echo xlt('Completed'); ?></a>
          </th>
         <?php } ?>
-
      <th></th><th></th><th></th>
 
     <?php } ?>

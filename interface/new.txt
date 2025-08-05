@@ -1,1 +1,1 @@
-this sample file for practice the git
+this sample file for practice the git hub

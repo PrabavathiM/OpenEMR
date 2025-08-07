@@ -2305,5 +2305,15 @@
   "requirement": 0,
   "acl_req": ["patients", "appt"],    
   "global_req_strict": []
+},
+  {
+  "label": "Category Report",
+  "menu_id": "cat_report",
+  "target": "cr",
+  "url": "/interface/category_report/category_report_table.php?skip_timeout_reset=1",
+  "children": [],
+  "requirement": 0,
+  "acl_req": ["patients", "appt"],    
+  "global_req_strict": []
 }
   ]

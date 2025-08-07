@@ -66,16 +66,6 @@
                     </option>
                 <?php endwhile; ?>
             </select>
-                <select name="facility" class="form-control" required>
-                    <option value=""><?php echo xlt("Please Select Facility"); ?></option>
-                    <?php while ($row = sqlFetchArray($facilityList)) : ?>
-                        <option value="<?php echo attr($row['name']); ?>"
-                            <?php echo ($selectedFacility == $row['name']) ? "selected" : ""; ?>>
-                            <?php echo text($row['name']); ?>
-                        </option>
-                    <?php endwhile; ?>
-                </select>
-
                 <button type="submit" class="btn btn-primary"><?php echo xlt("Submit"); ?></button>
             </form>
 
@@ -127,7 +117,6 @@
             </div>
         <?php endif; ?>
         <script src="patient_appointment_report.js"></script>
-
         <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
         <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
         <script src="https://cdn.datatables.net/2.3.2/js/dataTables.js"></script>
@@ -139,7 +128,5 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
         <script src="https://cdn.datatables.net/buttons/3.2.4/js/buttons.html5.min.js"></script>
         <script src="https://cdn.datatables.net/buttons/3.2.4/js/buttons.print.min.js"></script>
-    
     </body>
-
     </html>

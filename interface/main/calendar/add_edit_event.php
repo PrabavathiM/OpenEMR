@@ -51,6 +51,8 @@ require_once($GLOBALS['srcdir'] . '/patient_tracker.inc.php');
 require_once($GLOBALS['incdir'] . "/main/holidays/Holidays_Controller.php");
 require_once($GLOBALS['srcdir'] . '/group.inc.php');
 
+
+
 use OpenEMR\Common\Acl\AclMain;
 use OpenEMR\Common\Twig\TwigContainer;
 use OpenEMR\Core\Header;
@@ -58,6 +60,7 @@ use OpenEMR\Events\Appointments\AppointmentSetEvent;
 use OpenEMR\Events\Appointments\AppointmentRenderEvent;
 use OpenEMR\Events\Appointments\AppointmentDialogCloseEvent;
 use OpenEMR\Common\Logging\SystemLogger;
+
 
 //Check access control
 if (!AclMain::aclCheckCore('patients', 'appt', '', array('write', 'wsome'))) {
@@ -176,7 +179,7 @@ $eventDispatcher = $GLOBALS['kernel']->getEventDispatcher();
                 $args['new_multiple_value'] = $new_multiple_value;
                 $args['form_provider'] = $provider;
                 $args['event_date'] = $event_date;
-                $args['duration'] = $duration * 60;
+                $args['duration'] = $duration;
                 $args['recurrspec'] = $recurrspec;
                 $args['starttime'] = $starttime;
                 $args['endtime'] = $endtime;
@@ -198,7 +201,7 @@ $eventDispatcher = $GLOBALS['kernel']->getEventDispatcher();
             // specify some special variables needed for the INSERT
             $args['new_multiple_value'] = "";
             $args['event_date'] = $event_date;
-            $args['duration'] = $duration * 60;
+            $args['duration'] = $duration;
             $args['recurrspec'] = $recurrspec;
             $args['starttime'] = $starttime;
             $args['endtime'] = $endtime;
@@ -480,7 +483,7 @@ $eventDispatcher = $GLOBALS['kernel']->getEventDispatcher();
                 $providers_new = $_POST['form_provider'];
 
                 // ===== Only current event of repeating series =====
-                if ($_POST['recurr_affect'] == 'current') {
+                if ($_POST['recurr_affect'] == 'current')        {
                     // update all existing event records to exlude the current date
                     foreach ($providers_current as $provider) {
                         // update the provider's original event
@@ -1391,7 +1394,7 @@ $eventDispatcher = $GLOBALS['kernel']->getEventDispatcher();
             <div class="form-row mx-2">
                 <div class="col-sm form-group">
                     <label for='form_category'><?php echo xlt('Category'); ?>:</label>
-                    <select class='form-control' name='form_category' id='form_category' onchange='set_category()'>
+                        <select class='form-control' name='form_category' id='form_category' onchange='set_category()'>
                         <?php echo $catoptions ?>
                     </select>
                 </div>

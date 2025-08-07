@@ -943,29 +943,12 @@ $eventDispatcher = $GLOBALS['kernel']->getEventDispatcher();
         "authorized != 0 AND active = 1 ORDER BY lname, fname");
 
     // Get event categories.
-    $cres = sqlStatement("SELECT pc_catid, pc_catname, pc_recurrtype, pc_duration, pc_end_all_day " .
-        "FROM openemr_postcalendar_categories where pc_active = 1 ORDER BY pc_seq");
+    $cres = sqlStatement("SELECT openemr_postcalendar_categories.pc_catid, openemr_postcalendar_categories.pc_catname, openemr_postcalendar_categories.pc_recurrtype, openemr_postcalendar_categories.pc_duration, openemr_postcalendar_categories.pc_end_all_day, catogery_report.duration  " .
+        "FROM openemr_postcalendar_categories JOIN catogery_report ON openemr_postcalendar_categories where pc_active = 1 ORDER BY pc_seq");
+
 
     // Fix up the time format for AM/PM.
     $startampm = '1';
-    if ($starttimeh >= 12) { // p.m. starts at noon and not 12:01
-        $startampm = '2';
-        if ($starttimeh > 12 && $GLOBALS['time_display_format'] == 1) {
-            $starttimeh -= 12;
-        }
-    }
-
-    ?>
-    <script>
-        <?php require $GLOBALS['srcdir'] . "/formatting_DateToYYYYMMDD_js.js.php" ?>
-
-        var mypcc = <?php echo js_escape($GLOBALS['phone_country_code']); ?>;
-
-        var durations = new Array();
-        <?php
-        // Read the event categories, generate their options list, and get
-        // the default event duration from them if this is a new event.
-        $cattype = 0;
         if (!empty($_GET['prov']) && ($_GET['prov'] == true)) {
             $cattype = 1;
         }
@@ -978,6 +961,7 @@ $eventDispatcher = $GLOBALS['kernel']->getEventDispatcher();
             "pc_recurrtype, pc_duration, pc_end_all_day " .
             "FROM openemr_postcalendar_categories where pc_active = 1 ORDER BY pc_seq");
         $catoptions = "";
+        // print_r($catoptions); exit;
         $prefcat_options = "    <option value='0'>-- " . xlt("None{{Category}}") . " --</option>\n";
         $thisduration = 0;
         if ($eid) {
@@ -988,7 +972,7 @@ $eventDispatcher = $GLOBALS['kernel']->getEventDispatcher();
             $duration = round($crow['pc_duration'] / 60);
             if ($crow['pc_end_all_day']) {
                 $duration = 1440;
-            }
+            }       
 
             // This section is to build the list of preferred categories:
             if ($duration) {
@@ -1018,11 +1002,11 @@ $eventDispatcher = $GLOBALS['kernel']->getEventDispatcher();
                     $catoptions .= " selected";
                     $thisduration = $duration;
                 }
-            }
+            }           
 
             $catoptions .= ">" . text(xl_appt_category($crow['pc_catname'])) . "</option>\n";
         }
-        ?>
+?>
 
         <?php require($GLOBALS['srcdir'] . "/restoreSession.php"); ?>
 
@@ -1396,7 +1380,7 @@ $eventDispatcher = $GLOBALS['kernel']->getEventDispatcher();
                     <label for='form_category'><?php echo xlt('Category'); ?>:</label>
                         <select class='form-control' name='form_category' id='form_category' onchange='set_category()'>
                         <?php echo $catoptions ?>
-                    </select>
+                        </select>
                 </div>
                 <div class="col-sm form-group">
                     <label for='form_title'><?php echo xlt('Title'); ?>:</label>

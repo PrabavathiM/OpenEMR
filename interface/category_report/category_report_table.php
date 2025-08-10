@@ -46,9 +46,9 @@
     $prefcat_options = "    <option value='0'>-- " . xlt("None{{Category}}") . " --</option>\n";
 
     while ($crow = sqlFetchArray($cres)) {
-        $cat_duration = round($crow['pc_duration'] / 60);
+        $cat_duration = round($crow['$text'] / 60);
         if ($crow['pc_end_all_day']) {
-            $cat_duration= 1440;
+            $cat_duration = 1440;
         }
 
         // This section is to build the list of preferred categories:
@@ -108,7 +108,7 @@
                     <option value="">-- Select Duration --</option>
                     <?php
                     for ($i = 0; $i <= 60; $i += 5) {
-                        $text = $i;
+                        $text = $i; 
                         echo "<option value=\"$i\">$text</option>";
                     }
                     ?>
@@ -121,24 +121,27 @@
             </div>
         </form>
         <?php
-        
         if (!empty($selectedCatogery) && !empty($duration)) {
             // Get category name from ID
             $catnameQuery = "SELECT pc_catname FROM openemr_postcalendar_categories WHERE pc_catid = ?";
             $catnameResult = sqlQuery($catnameQuery, array($selectedCatogery));
             $catname = $catnameResult['pc_catname'] ?? '';
-            //  print_r($catname);exit;
+            // 1. Check for duplicate category name + duration
+            $check_both_query = "SELECT * FROM catogery_report WHERE name = ? AND duration = ?";
+            $check_both_result = sqlStatement($check_both_query, array($catname, $duration));
 
-            if ($catname) {
-                $check_query = "SELECT * FROM catogery_report WHERE pc_catid=? AND name = ? AND duration = ?";
-                $check_result = sqlStatement($check_query, array($selectedCatogery,$catname, $duration));
+            // 2. Check for duplicate category name only (regardless of duration)
+            $check_name_query = "SELECT * FROM catogery_report WHERE name = ?";
+            $check_name_result = sqlStatement($check_name_query, array($catname));
 
-                if (sqlNumRows($check_result) == 0 && $catname != $catnameResult) {
-                    $insert_query = "INSERT INTO catogery_report (pc_catid, name, duration) VALUES (?, ?, ?)";
-                    sqlStatement($insert_query, array($selectedCatogery, $catname, $duration));
-                } else {
-                    echo "<div class='alert alert-warning'>" . xlt("Category and Duration already exists.") . "</div>";
-                }
+            if (sqlNumRows($check_both_result) > 0) {
+                echo "<div class='alert alert-danger'>" . xlt("This Category and Duration combination already exists.") . "</div>";
+            } elseif (sqlNumRows($check_name_result) > 0) {
+                echo "<div class='alert alert-warning'>" . xlt("This Category already exists with a different duration.") . "</div>";
+            } else {
+                // Safe to insert
+                $insert_query = "INSERT INTO catogery_report (pc_catid, name, duration) VALUES (?, ?, ?)";
+                sqlStatement($insert_query, array($selectedCatogery, $catname, $duration));
             }
         }
 

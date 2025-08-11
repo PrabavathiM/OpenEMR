@@ -78,7 +78,7 @@ if (!AclMain::aclCheckCore('admin', 'acl')) {
                 }
                 //if Cancel, then reset/hide form and show create/remove acl links
                 if (this.id == "button_acl_add_cancel") {
-                    $("#div_acl_add_form").hide("slow");
+                    $("#div_acl_add_form").hide("slow");    
                     $("#acl_error").empty();
                     $("#div_acl_add_form span.alert").empty();
                     $("#none_acl_returns").show();

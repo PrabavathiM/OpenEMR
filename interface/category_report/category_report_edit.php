@@ -11,7 +11,7 @@ use OpenEMR\Core\Header;
 
 Header::setupHeader();
 
-$Catogery = sqlStatement("SELECT pc_catname FROM openemr_postcalendar_categories");
+$Catogery = sqlStatement("SELECT pc_catname FROM categories_patient_report");
 
 $old_name = $_GET['name'] ?? '';
 $old_duration = $_GET['duration'] ?? '';
@@ -32,12 +32,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['csrf_token_form'])) {
 
     if (!empty($selectedCatogery) && !empty($duration)) {
         
-        $check_query = "SELECT * FROM catogery_report WHERE name = ? AND duration = ?";
+        $check_query = "SELECT * FROM categories_patient_report  WHERE pc_catname = ? AND pc_duration = ?";
         $check_result = sqlStatement($check_query, [$selectedCatogery, $duration]);
 
         if (sqlNumRows($check_result) == 0 || ($old_name == $selectedCatogery && $old_duration == $duration)) {
-            $update_query = "UPDATE catogery_report SET name = ?, duration = ? WHERE name = ? AND duration = ?";
-            sqlStatement($update_query, [$selectedCatogery, $duration, $old_name, $old_duration]);
+            $update_query = "UPDATE categories_patient_report SET pc_duration = ? WHERE pc_catname = ? AND pc_duration = ?";
+            sqlStatement($update_query, [$duration, $old_name, $old_duration]);
             $success_msg = "Category updated successfully.";
             header("Location: category_report_table.php");
             exit;

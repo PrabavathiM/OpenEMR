@@ -11,21 +11,15 @@
 
     Header::setupHeader();
 
-    // $Catogery = sqlStatement("SELECT pc_catname FROM openemr_postcalendar_categories");
-    // $selectedCatogery = $_POST['pc_catname'] ?? '';
-    // $duration = $_POST['duration'] ?? '';
-
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (!CsrfUtils::verifyCsrfToken($_POST["csrf_token_form"])) {
             CsrfUtils::csrfNotVerified();
         }
     }
 
-
     $selectedCatogery = isset($_POST['form_category']) ? $_POST['form_category'] : '';
     $duration = isset($_POST['duration']) ? $_POST['duration'] : '';
     $catid = isset($_POST['catid_hidden']) ? $_POST['catid_hidden'] : '';
-
 
     // Read the event categories, generate their options list, and get
     // the default event duration from them if this is a new event.
@@ -38,15 +32,15 @@
         $cattype = 3;
     }
 
-    $cres = sqlStatement("SELECT pc_catid, pc_cattype, pc_catname, " .
-        "pc_recurrtype, pc_duration, pc_end_all_day " .
-        "FROM openemr_postcalendar_categories where pc_active = 1 ORDER BY pc_seq");
+    $cres = sqlStatement("SELECT pc_catid,pc_constant_id,pc_cattype, pc_catname, 
+        pc_recurrtype, pc_duration
+        FROM categories_patient_report");
     $catoptions = "";
 
     $prefcat_options = "    <option value='0'>-- " . xlt("None{{Category}}") . " --</option>\n";
 
     while ($crow = sqlFetchArray($cres)) {
-        $cat_duration = round($crow['$text'] / 60);
+        $cat_duration = round($crow['pc_duration'] / 60);
         if ($crow['pc_end_all_day']) {
             $cat_duration = 1440;
         }
@@ -108,7 +102,7 @@
                     <option value="">-- Select Duration --</option>
                     <?php
                     for ($i = 0; $i <= 60; $i += 5) {
-                        $text = $i; 
+                        $text = $i;
                         echo "<option value=\"$i\">$text</option>";
                     }
                     ?>
@@ -121,65 +115,59 @@
             </div>
         </form>
         <?php
+        // Always get all data for display
+        $allDataQuery = "SELECT * FROM categories_patient_report";
+        $allDataResult = sqlStatement($allDataQuery);
+
+        // If form is submitted, run checks first
         if (!empty($selectedCatogery) && !empty($duration)) {
-            // Get category name from ID
-            $catnameQuery = "SELECT pc_catname FROM openemr_postcalendar_categories WHERE pc_catid = ?";
+            $catnameQuery = "SELECT pc_catname FROM categories_patient_report WHERE pc_catid = ?";
             $catnameResult = sqlQuery($catnameQuery, array($selectedCatogery));
             $catname = $catnameResult['pc_catname'] ?? '';
-            // 1. Check for duplicate category name + duration
-            $check_both_query = "SELECT * FROM catogery_report WHERE name = ? AND duration = ?";
+
+            $check_both_query = "SELECT pc_catname, pc_duration FROM categories_patient_report WHERE pc_catname = ? AND pc_duration = ?";
             $check_both_result = sqlStatement($check_both_query, array($catname, $duration));
 
-            // 2. Check for duplicate category name only (regardless of duration)
-            $check_name_query = "SELECT * FROM catogery_report WHERE name = ?";
+            $check_name_query = "SELECT * FROM categories_patient_report WHERE pc_catname = ?";
             $check_name_result = sqlStatement($check_name_query, array($catname));
 
             if (sqlNumRows($check_both_result) > 0) {
                 echo "<div class='alert alert-danger'>" . xlt("This Category and Duration combination already exists.") . "</div>";
             } elseif (sqlNumRows($check_name_result) > 0) {
                 echo "<div class='alert alert-warning'>" . xlt("This Category already exists with a different duration.") . "</div>";
-            } else {
-                // Safe to insert
-                $insert_query = "INSERT INTO catogery_report (pc_catid, name, duration) VALUES (?, ?, ?)";
-                sqlStatement($insert_query, array($selectedCatogery, $catname, $duration));
             }
         }
 
-        $allDataQuery = "SELECT * FROM catogery_report";
-        $allDataResult = sqlStatement($allDataQuery);
-        echo "<table class='table table-bordered' id='catogery_report_table'>
-        <thead>
-            <tr>
-                <th>" . xlt("Category") . "</th>
-                <th>" . xlt("Duration") . "</th>
-                <th>" . xlt("Actions") . "</th>
-            </tr>
-        </thead>
-        <tbody>";
+        echo "<table class='table table-bordered' id='catogery_report_table'>       
+<thead>
+    <tr>
+        <th>" . xlt("Category") . "</th>
+        <th>" . xlt("Duration") . "</th>
+        <th>" . xlt("Actions") . "</th>
+    </tr>
+</thead>
+<tbody>";
 
         if (sqlNumRows($allDataResult) > 0) {
             while ($row = sqlFetchArray($allDataResult)) {
                 echo "<tr>
-            <td>" . text($row['name']) . "</td>
-            <td>" . text($row['duration']) . "</td>
+            <td>" . text($row['pc_catname']) . "</td>
+            <td>" . text($row['pc_duration']) . "</td>
             <td>
-                <a href='category_report_edit.php?name=" . urlencode($row['name']) . "&duration=" . urlencode($row['duration']) . "' 
+                <a href='category_report_edit.php?name=" . urlencode($row['pc_catname']) . "&duration=" . urlencode($row['pc_duration']) . "' 
                    class='btn btn-primary'>
                     " . xlt("Edit") . "
                 </a>
-                <form method='POST' style='display:inline-block' action='category_report_delete.php' onsubmit='return confirm(\"Are you sure?\");'>
-                    <input type='hidden' name='name' value='" . attr($row['name']) . "'>
-                    <input type='hidden' name='duration' value='" . attr($row['duration']) . "'>
-                    <button class='btn btn-danger' type='submit'>" . xlt("Delete") . "</button>
-                </form>
             </td>
-          </tr>";
+        </tr>";
             }
         } else {
             echo "<tr><td colspan='3' class='text-center text-muted'>" . xlt("No records in category report table.") . "</td></tr>";
         }
 
         echo "</tbody></table>";
+
+
         ?>
 
     </body>

@@ -946,7 +946,7 @@ $eventDispatcher = $GLOBALS['kernel']->getEventDispatcher();
     // Fix up the time format for AM/PM.
     $startampm = '1';
     if ($starttimeh >= 12) { // p.m. starts at noon and not 12:01
-        $startampm = '2';
+        $startampm = '2';   
         if ($starttimeh > 12 && $GLOBALS['time_display_format'] == 1) {
             $starttimeh -= 12;
         }

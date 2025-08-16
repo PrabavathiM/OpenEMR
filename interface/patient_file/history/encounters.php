@@ -472,6 +472,9 @@ window.onload = function() {
 
                     //fetch acl for given pc_catid
                     $postCalendarCategoryACO = AclMain::fetchPostCalendarCategoryACO($result4['pc_catid']);
+                    
+                    
+
                 if ($postCalendarCategoryACO) {
                     $postCalendarCategoryACO = explode('|', $postCalendarCategoryACO);
                     $authPostCalendarCategory = AclMain::aclCheckCore($postCalendarCategoryACO[0], $postCalendarCategoryACO[1]);
@@ -479,7 +482,7 @@ window.onload = function() {
                     $authPostCalendarCategory = true;
                 }
 
-                if (!empty($result4["reason"])) {
+                if (!empty($result4["reason"])) {   
                     $reason_string .= text($result4["reason"]) . "<br />\n";
                 }
 
@@ -586,7 +589,7 @@ window.onload = function() {
                             ($auth_notes && $enc['user'] == $_SESSION['authUser']) ||
                             ($auth_relaxed && ($formdir == 'sports_fitness' || $formdir == 'podiatry'))
                         ) {
-                        } else {
+                        } else { 
                             continue;
                         }
 

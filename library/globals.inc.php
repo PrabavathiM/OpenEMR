@@ -715,7 +715,6 @@ $GLOBALS_METADATA = array(
             '1',                              // default = true
             xl('Are appointment category names to be translated?')
         ),
-
         'units_of_measurement' => array(
             xl('Units for Visit Forms'),
             array(

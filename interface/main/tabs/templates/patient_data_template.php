@@ -130,7 +130,7 @@ switch ($search_any_type) {
                 <ul class="dropdown-menu" aria-labelledby="pastEncounters">
                     <!-- ko foreach:encounterArray -->
                     <li class="d-inline-flex">
-                        <a class="dropdown-item" href="#" data-bind="click:chooseEncounterEvent">
+                        <a class="dropdown-item" href="#" data-bind="click: chooseEncounterEvent">
                             <span data-bind="text:date"></span>
                             <span data-bind="text:category"></span>
                         </a>

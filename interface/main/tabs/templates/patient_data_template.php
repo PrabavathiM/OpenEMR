@@ -141,7 +141,7 @@ switch ($search_any_type) {
                     <!-- /ko -->    
                 </ul>
             </div>
-                <a class="btn btn-sm btn-secondary" data-bind="click: clickNewEncounter" href="#"
+                <a class="btn btn-sm btn-secondary" data-bind="click: cdlickNewEncounter" href="#"
                     title="<?php echo xla("New Encounter"); ?>">
                     <i class="fa fa-plus"></i>
                 </a>

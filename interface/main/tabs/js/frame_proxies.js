@@ -79,14 +79,14 @@ left_nav.setTherapyGroup = function(group_id, group_name){
     app_view_model.attendant_template_type('therapy-group-template');
 };
 
-left_nav.setPatientEncounter = function(EncounterIdArray,EncounterDateArray,CalendarCategoryArray)
+left_nav.setPatientEncounter = function(EncounterIdArray,EncounterDateArray,CalendarCategoryArray,CalendarFacilityArray)
 {
 
     app_view_model.application_data[attendant_type]().encounterArray.removeAll();
     for(var encIdx=0;encIdx<EncounterIdArray.length;encIdx++)
-    {
+    {   
         app_view_model.application_data[attendant_type]().encounterArray.push(
-            new encounter_data(EncounterIdArray[encIdx], EncounterDateArray[encIdx], CalendarCategoryArray[encIdx]));
+        new encounter_data(EncounterIdArray[encIdx], EncounterDateArray[encIdx], CalendarCategoryArray[encIdx],CalendarFacilityArray[encIdx]));
     }
 };
 

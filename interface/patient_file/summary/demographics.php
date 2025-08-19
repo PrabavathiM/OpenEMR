@@ -901,27 +901,27 @@ $oemr_ui = new OemrUI($arrOeUiSettings);
             var EncounterDateArray = [];
             var CalendarCategoryArray = [];
             var EncounterIdArray = [];
-            var facilityArray=[];
-            // console.log(CalendarCategoryArray);
+            var CalendarFacilityArray = [];
+          
             var Count = 0;
             
                 <?php
             //Encounter details are stored to javacript as array.
-                $result4 = sqlStatement("SELECT fe.encounter,fe.date,openemr_postcalendar_categories.pc_catname,fe.facility FROM form_encounter AS fe " .
+                $result4 = sqlStatement("SELECT fe.encounter,fe.date,openemr_postcalendar_categories.pc_catname, fe.facility FROM form_encounter AS fe " .
                 " left join openemr_postcalendar_categories on fe.pc_catid=openemr_postcalendar_categories.pc_catid  WHERE fe.pid = ? order by fe.date desc", array($pid));
                 if (sqlNumRows($result4) > 0) {
                     while ($rowresult4 = sqlFetchArray($result4)) { ?>
             EncounterIdArray[Count] = <?php echo js_escape($rowresult4['encounter']); ?>;
             EncounterDateArray[Count] = <?php echo js_escape(oeFormatShortDate(date("Y-m-d", strtotime($rowresult4['date'])))); ?>;
             CalendarCategoryArray[Count] = <?php echo js_escape(xl_appt_category($rowresult4['pc_catname'])); ?>;
-            facilityArray[Count]=<?php echo js_escape($rowresult4['facility']); ?>;
-
+            CalendarFacilityArray[Count] = <?php echo js_escape($rowresult4['facility']); ?>;   
             Count++;
                         <?php
                     }
                 }
                 ?>
-            parent.left_nav.setPatientEncounter(EncounterIdArray, EncounterDateArray, CalendarCategoryArray,facilityArray );
+                // console.log(CalendarFacilityArray); 
+            parent.left_nav.setPatientEncounter(EncounterIdArray, EncounterDateArray, CalendarCategoryArray, CalendarFacilityArray);
                 <?php
             } // end setting new pid
             ?>
@@ -930,7 +930,17 @@ $oemr_ui = new OemrUI($arrOeUiSettings);
                 $query_result = sqlQuery("SELECT `date` FROM `form_encounter` WHERE `encounter` = ?", array($encounter)); ?>
             encurl = 'encounter/encounter_top.php?set_encounter=' + <?php echo js_url($encounter); ?> +'&pid=' + <?php echo js_url($pid); ?>;
             parent.left_nav.setEncounter(<?php echo js_escape(oeFormatShortDate(date("Y-m-d", strtotime($query_result['date'])))); ?>, <?php echo js_escape($encounter); ?>, 'enc');
-            top.restoreSession();
+            top.restoreSession();left_nav.setPatientEncounter = function(EncounterIdArray,EncounterDateArray,CalendarCategoryArray,CalendarFacilityArray)
+{
+
+    app_view_model.application_data[attendant_type]().encounterArray.removeAll();
+    for(var encIdx=0;encIdx<EncounterIdArray.length;encIdx++)
+    {   
+        app_view_model.application_data[attendant_type]().encounterArray.push(
+        new encounter_data(EncounterIdArray[encIdx], EncounterDateArray[encIdx], CalendarCategoryArray[encIdx],CalendarFacilityArray[encIdx]));
+    }
+};
+
             parent.left_nav.loadFrame('enc2', 'enc', 'patient_file/' + encurl);
             <?php } // end setting new encounter id (only if new pid is also set)
             ?>

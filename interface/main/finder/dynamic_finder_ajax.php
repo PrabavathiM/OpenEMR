@@ -44,6 +44,7 @@ if ($searchAny) {
         "SELECT field_id FROM layout_options WHERE form_id = 'DEM'
             AND field_id not like ? AND field_id not like ? AND uor !=0",
         array('em\_%', 'add%')
+     
     );
     for ($iter = 0; $row = sqlFetchArray($layoutCols); $iter++) {
         $aColumns[] = $row['field_id'];
@@ -63,6 +64,7 @@ if ($iDisplayStart >= 0 && $iDisplayLength >= 0) {
 //
 $searchMethodInPatientList = isset($_GET['searchType' ]) && $_GET['searchType' ] === "true" ?  true : false;
 
+//
 // Column sorting parameters.
 //
 $orderby = '';

@@ -184,7 +184,7 @@ function refreshPatient(data,evt)
 }
 
 function refreshGroup(data,evt)
-{
+{   
     loadCurrentTherapyGroup();
 }
 

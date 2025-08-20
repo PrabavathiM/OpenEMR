@@ -125,21 +125,23 @@ switch ($search_any_type) {
                     data-toggle="dropdown"  
                     aria-haspopup="true"
                     aria-expanded="true">
-                    <?php echo xlt("Select Encounter"); ?>&nbsp;
-                    (<span data-bind="text:encounterArray().length"></span>)<span class="caret"></span></button>
-                <ul class="dropdown-menu" aria-labelledby="pastEncounters">
-                    <!-- ko foreach:encounterArray -->
-                    <li class="d-inline-flex">
-                        <a class="dropdown-item" href="#" data-bind="click:chooseEncounterEvent">
-                            <span data-bind="text:date"></span>
-                            <span data-bind="text:category"></span>
-                        </a>
-                        <a href="#" class="dropdown-item" data-bind="click:reviewEncounterEvent">
-                            <i class="fa fa-rotate-left"></i>&nbsp;<?php echo xlt("Review"); ?>
-                        </a>
-                    </li>
-                    <!-- /ko -->    
-                </ul>
+                        <?php echo xlt("Select Encounter"); ?>&nbsp;
+                        (<span data-bind="text:encounterArray().length"></span>)<span class="caret"></span></button>
+                    <ul class="dropdown-menu" aria-labelledby="pastEncounters">
+                        <!-- ko foreach:encounterArray -->
+                        <li class="d-inline-flex">
+                            <a class="dropdown-item" href="#" data-bind="click: chooseEncounterEvent">
+                                <span data-bind="text:date()"></span>
+                                <span data-bind="text:category()" class="text:encounterArray()"></span>
+                                <span data-bind="text:facility()"></span> 
+                                
+                            </a>
+                            <a href="#" class="dropdown-item" data-bind="click:reviewEncounterEvent">
+                                <i class="fa fa-rotate-left"></i>&nbsp;<?php echo xlt("Review"); ?>
+                            </a>
+                        </li>
+                        <!-- /ko -->    
+                    </ul>
             </div>
                 <a class="btn btn-sm btn-secondary" data-bind="click: clickNewEncounter" href="#"
                     title="<?php echo xla("New Encounter"); ?>">

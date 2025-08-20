@@ -10,12 +10,13 @@
  * @license   https://github.com/openemr/openemr/blob/master/LICENSE GNU General Public License 3
  */
 
-function encounter_data(id,date,category)
+function encounter_data(id,date,category,facility)
 {
     var self=this;
     self.id=ko.observable(id);
     self.date=ko.observable(date);
     self.category=ko.observable(category);
+    self.facility=ko.observable(facility);
     return this;
 }
 

@@ -49,7 +49,7 @@ while ($row = sqlFetchArray($res)) {
     $colname = $row['option_id'];
     $colorder = $sort_dir_map[$row['toggle_setting_1']]; // Get the title 'asc' or 'desc' using the value
     $title = xl_list_label($row['title']);
-    $title1 = ($title == xl('Full Name')) ? xl('Name') : $title;
+    $title1 = ($title == xl('Full Name')) ? xl('Name') : $title;    
     $header .= "   <th>";
     $header .= text($title);
     $header .= "</th>\n";
@@ -145,7 +145,7 @@ $loading = "";
     table.dataTable.order-column tbody tr>.sorting_1,
     table.dataTable.order-column tbody tr>.sorting_2,
     table.dataTable.order-column tbody tr>.sorting_3,
-    table.dataTable.display tbody tr>.sorting_1,
+        table.dataTable.display tbody tr>.sorting_1,
     table.dataTable.display tbody tr>.sorting_2,
     table.dataTable.display tbody tr>.sorting_3 {
         background-color: var(--light) !important;
@@ -250,6 +250,7 @@ $loading = "";
 </style>
 <script>
     var uspfx = '<?php echo attr($uspfx); ?>';
+  
 
     $(function () {
         // Initializing the DataTable.
@@ -288,6 +289,7 @@ $loading = "";
 
         <?php
         $checked = (!empty($GLOBALS['gbl_pt_list_new_window'])) ? 'checked' : '';
+       
         ?>
         $("div.mytopdiv").html("<form name='myform'><div class='form-check form-check-inline'><label for='form_new_window' class='form-check-label' id='form_new_window_label'><input type='checkbox' class='form-check-input' id='form_new_window' name='form_new_window' value='1' <?php echo $checked; ?> /><?php echo xlt('Open in New Browser Tab'); ?></label></div><div class='form-check form-check-inline'><label for='setting_search_type' id='setting_search_type_label' class='form-check-label'><input type='checkbox' name='setting_search_type' class='form-check-input' id='setting_search_type' onchange='persistCriteria(this, event)' value='<?php echo attr($patient_finder_exact_search); ?>'<?php echo text($patient_finder_exact_search); ?>/><?php echo xlt('Search with exact method'); ?></label></div></form>");
 

@@ -685,12 +685,12 @@ class EncounterService extends BaseService
         $encounterList = [
             'ids' => []
             ,'dates' => []
-            ,'categories' => []
+            
         ];
         foreach ($encounters as $index => $encounter) {
             $encounterList['ids'][$index] = $encounter['eid'];
             $encounterList['dates'][$index] = date("Y-m-d", strtotime($encounter['date']));
-            $encounterList['categories'][$index] = $encounter['catname'];
+            
         }
         return $encounterList;
     }

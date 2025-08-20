@@ -131,11 +131,10 @@ switch ($search_any_type) {
                         <!-- ko foreach:encounterArray -->
                         <li class="d-inline-flex">
                             <a class="dropdown-item" href="#" data-bind="click: chooseEncounterEvent">
-                                <span data-bind="text:date"></span>
-                                <span data-bind="text:category"></span>
-                                <!-- <span data-bind="text:category, click:function(){ console.log('Category:', category()) }"></span> -->
-                                <span data-bind="text:facility"></span> 
-                                <!-- <span data-bind="text:facility, click:function(){ console.log('facility:', facility()) }"></span> -->
+                                <span data-bind="text:date()"></span>
+                                <span data-bind="text:category()" class="text:encounterArray()"></span>
+                                <span data-bind="text:facility()"></span> 
+                                
                             </a>
                             <a href="#" class="dropdown-item" data-bind="click:reviewEncounterEvent">
                                 <i class="fa fa-rotate-left"></i>&nbsp;<?php echo xlt("Review"); ?>

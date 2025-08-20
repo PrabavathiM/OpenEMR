@@ -16,7 +16,7 @@
         self.id=ko.observable(id);
         self.date=ko.observable(date);  
         self.category=ko.observable(category); 
-        self.facility = ko.observable(facility); 
+        self.facility=ko.observable(facility);
         return this;
     }
 

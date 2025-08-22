@@ -116,7 +116,7 @@ if ($GLOBALS['enable_cdr']) {
             $all_allergy_alerts = allergy_conflict($pid, 'all', $_SESSION['authUser'], true);
         }
     }
-    SessionUtil::setSession('alert_notify_pid', $pid);
+    SessionUtil::setSession('alert_notify_pid', $pid);  
     // can not output html until after above setSession call
     if (!empty($allergyWarningMessage)) {
         echo $allergyWarningMessage;
@@ -400,7 +400,7 @@ $oemr_ui = new OemrUI($arrOeUiSettings);
 
         // Process click on Delete link.
         function deleteme() { // @todo don't think this is used any longer!!
-            dlgopen('../deleter.php?patient=' + <?php echo js_url($pid); ?> +'&csrf_token_form=' + <?php echo js_url(CsrfUtils::collectCsrfToken()); ?>, '_blank', 500, 450, '', '', {
+            dlgopen('../deleter.php?patient=' + <?php echo js_url($pid); ?> + '&csrf_token_form=' + <?php echo js_url(CsrfUtils::collectCsrfToken()); ?>, '_blank', 500, 450, '', '', {
                 allowResize: false,
                 allowDrag: false,
                 dialogId: 'patdel',
@@ -452,13 +452,13 @@ $oemr_ui = new OemrUI($arrOeUiSettings);
             let w = 960; // for weno width
 
             dlgopen(url, 'editScripts', w, 400, '', '', {
-                resolvePromiseOn: 'close',
-                allowResize: true,
-                allowDrag: true,
-                dialogId: 'editscripts',
-                type: 'iframe'
-            })
-            .then(() => refreshme());
+                    resolvePromiseOn: 'close',
+                    allowResize: true,
+                    allowDrag: true,
+                    dialogId: 'editscripts',
+                    type: 'iframe'
+                })
+                .then(() => refreshme());
             return false;
         }
 
@@ -520,62 +520,62 @@ $oemr_ui = new OemrUI($arrOeUiSettings);
             }
         }
 
-        $(function () {
+        $(function() {
             var msg_updation = '';
             <?php
             if ($GLOBALS['erx_enable']) {
                 $soap_status = sqlStatement("select soap_import_status,pid from patient_data where pid=? and soap_import_status in ('1','3')", array($pid));
                 while ($row_soapstatus = sqlFetchArray($soap_status)) { ?>
-            top.restoreSession();
-            let reloadRequired = false;
-            $.ajax({
-                type: "POST",
-                url: "../../soap_functions/soap_patientfullmedication.php",
-                dataType: "html",
-                data: {
-                    patient: <?php echo js_escape($row_soapstatus['pid']); ?>,
-                },
-                async: false,
-                success: function (thedata) {
-                    if (!thedata.includes("Nothing")) {
-                        reloadRequired = true;
-                    }
-                    msg_updation += thedata;
-                },
-                error: function () {
-                    alert('ajax error');
-                }
-            });
+                    top.restoreSession();
+                    let reloadRequired = false;
+                    $.ajax({
+                        type: "POST",
+                        url: "../../soap_functions/soap_patientfullmedication.php",
+                        dataType: "html",
+                        data: {
+                            patient: <?php echo js_escape($row_soapstatus['pid']); ?>,
+                        },
+                        async: false,
+                        success: function(thedata) {
+                            if (!thedata.includes("Nothing")) {
+                                reloadRequired = true;
+                            }
+                            msg_updation += thedata;
+                        },
+                        error: function() {
+                            alert('ajax error');
+                        }
+                    });
 
-            top.restoreSession();
-            $.ajax({
-                type: "POST",
-                url: "../../soap_functions/soap_allergy.php",
-                dataType: "html",
-                data: {
-                    patient: <?php echo js_escape($row_soapstatus['pid']); ?>,
-                },
-                async: false,
-                success: function (thedata) {
-                    if (!thedata.includes("Nothing")) {
-                        reloadRequired = true;
-                    }
-                    msg_updation += "\n" + thedata;
-                },
-                error: function () {
-                    alert('ajax error');
-                }
-            });
+                    top.restoreSession();
+                    $.ajax({
+                        type: "POST",
+                        url: "../../soap_functions/soap_allergy.php",
+                        dataType: "html",
+                        data: {
+                            patient: <?php echo js_escape($row_soapstatus['pid']); ?>,
+                        },
+                        async: false,
+                        success: function(thedata) {
+                            if (!thedata.includes("Nothing")) {
+                                reloadRequired = true;
+                            }
+                            msg_updation += "\n" + thedata;
+                        },
+                        error: function() {
+                            alert('ajax error');
+                        }
+                    });
 
-            if (reloadRequired) {
-                document.location.reload();
-            }
+                    if (reloadRequired) {
+                        document.location.reload();
+                    }
 
                     <?php
                     if ($GLOBALS['erx_import_status_message']) { ?>
-            if (msg_updation)
-                alert(msg_updation);
-                        <?php
+                        if (msg_updation)
+                            alert(msg_updation);
+            <?php
                     }
                 }
             }
@@ -583,13 +583,13 @@ $oemr_ui = new OemrUI($arrOeUiSettings);
 
             // load divs
             placeHtml("stats.php", "stats_div", true).then(() => {
-                $('[data-toggle="collapse"]').on('click', function (e) {
+                $('[data-toggle="collapse"]').on('click', function(e) {
                     updateUserVisibilitySetting(e);
                 });
             });
             placeHtml("pnotes_fragment.php", 'pnotes_ps_expand').then(() => {
                 // must be delegated event!
-                $(this).on("click", ".complete_btn", function () {
+                $(this).on("click", ".complete_btn", function() {
                     let btn = $(this);
                     let csrf = new FormData;
                     csrf.append("csrf_token_form", <?php echo js_escape(CsrfUtils::collectCsrfToken()); ?>);
@@ -597,7 +597,7 @@ $oemr_ui = new OemrUI($arrOeUiSettings);
                         method: "POST",
                         credentials: 'same-origin',
                         body: csrf
-                    }).then(function () {
+                    }).then(function() {
                         placeHtml("pnotes_fragment.php", 'pnotes_ps_expand');
                     });
                 });
@@ -606,83 +606,83 @@ $oemr_ui = new OemrUI($arrOeUiSettings);
             placeHtml("labdata_fragment.php", "labdata_ps_expand");
             placeHtml("track_anything_fragment.php", "track_anything_ps_expand");
             <?php if ($vitals_is_registered && AclMain::aclCheckCore('patients', 'med')) { ?>
-            // Initialize the Vitals form if it is registered and user is authorized.
-            placeHtml("vitals_fragment.php", "vitals_ps_expand");
+                // Initialize the Vitals form if it is registered and user is authorized.
+                placeHtml("vitals_fragment.php", "vitals_ps_expand");
             <?php } ?>
 
             <?php if ($GLOBALS['enable_cdr'] && $GLOBALS['enable_cdr_crw']) { ?>
-            placeHtml("clinical_reminders_fragment.php", "clinical_reminders_ps_expand", true, true).then(() => {
-                // (note need to place javascript code here also to get the dynamic link to work)
-                $(".medium_modal").on('click', function (e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    dlgopen('', '', 800, 200, '', '', {
-                        buttons: [{
-                            text: <?php echo xlj('Close'); ?>,
-                            close: true,
-                            style: 'secondary btn-sm'
-                        }],
-                        onClosed: 'refreshme',
-                        allowResize: false,
-                        allowDrag: true,
-                        dialogId: 'demreminder',
-                        type: 'iframe',
-                        url: $(this).attr('href')
+                placeHtml("clinical_reminders_fragment.php", "clinical_reminders_ps_expand", true, true).then(() => {
+                    // (note need to place javascript code here also to get the dynamic link to work)
+                    $(".medium_modal").on('click', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        dlgopen('', '', 800, 200, '', '', {
+                            buttons: [{
+                                text: <?php echo xlj('Close'); ?>,
+                                close: true,
+                                style: 'secondary btn-sm'
+                            }],
+                            onClosed: 'refreshme',
+                            allowResize: false,
+                            allowDrag: true,
+                            dialogId: 'demreminder',
+                            type: 'iframe',
+                            url: $(this).attr('href')
+                        });
                     });
+                    $(".cdr-rule-btn-info-launch").on("click", function(e) {
+                        let pid = <?php echo js_escape($pid); ?>;
+                        let csrfToken = <?php echo js_escape(CsrfUtils::collectCsrfToken()); ?>;
+                        let ruleId = $(this).data("ruleId");
+                        let launchUrl = "<?php echo $GLOBALS['webroot']; ?>/interface/super/rules/index.php?action=review!view&pid=" +
+                            encodeURIComponent(pid) + "&rule_id=" + encodeURIComponent(ruleId) + "&csrf_token_form=" + encodeURIComponent(csrfToken);
+                        e.preventDefault();
+                        e.stopPropagation();
+                        // as we're loading another iframe, make sure to sync session
+                        window.top.restoreSession();
+
+                        let windowMessageHandler = function() {
+                            console.log("received message ", event);
+                            if (event.origin !== window.location.origin) {
+                                return;
+                            }
+                            let data = event.data;
+                            if (data && data.type === 'cdr-edit-source') {
+                                window.name = event.source.name;
+                                dlgclose();
+                                window.top.removeEventListener('message', windowMessageHandler);
+                                // loadFrame already handles webroot and /interface/ prefix.
+                                let editUrl = '/super/rules/index.php?action=edit!summary&id=' + encodeURIComponent(data.ruleId) +
+                                    "&csrf_token=" + encodeURIComponent(csrfToken);
+                                window.parent.left_nav.loadFrame('adm', 'adm0', editUrl);
+                            }
+                        };
+                        window.top.addEventListener('message', windowMessageHandler);
+
+                        dlgopen('', 'cdrEditSource', 800, 200, '', '', {
+                            buttons: [{
+                                text: <?php echo xlj('Close'); ?>,
+                                close: true,
+                                style: 'secondary btn-sm'
+                            }],
+                            // don't think we need to refresh
+                            // onClosed: 'refreshme',
+                            allowResize: true,
+                            allowDrag: true,
+                            dialogId: 'rulereview',
+                            type: 'iframe',
+                            url: launchUrl,
+                            onClose: function() {
+                                window.top.removeEventListener('message', windowMessageHandler);
+                            }
+                        });
+                    })
                 });
-                $(".cdr-rule-btn-info-launch").on("click", function (e) {
-                    let pid = <?php echo js_escape($pid); ?>;
-                    let csrfToken = <?php echo js_escape(CsrfUtils::collectCsrfToken()); ?>;
-                    let ruleId = $(this).data("ruleId");
-                    let launchUrl = "<?php echo $GLOBALS['webroot']; ?>/interface/super/rules/index.php?action=review!view&pid="
-                        + encodeURIComponent(pid) + "&rule_id=" + encodeURIComponent(ruleId) + "&csrf_token_form=" + encodeURIComponent(csrfToken);
-                    e.preventDefault();
-                    e.stopPropagation();
-                    // as we're loading another iframe, make sure to sync session
-                    window.top.restoreSession();
-
-                    let windowMessageHandler = function () {
-                        console.log("received message ", event);
-                        if (event.origin !== window.location.origin) {
-                            return;
-                        }
-                        let data = event.data;
-                        if (data && data.type === 'cdr-edit-source') {
-                            window.name = event.source.name;
-                            dlgclose();
-                            window.top.removeEventListener('message', windowMessageHandler);
-                            // loadFrame already handles webroot and /interface/ prefix.
-                            let editUrl = '/super/rules/index.php?action=edit!summary&id=' +encodeURIComponent(data.ruleId)
-                                + "&csrf_token=" + encodeURIComponent(csrfToken);
-                            window.parent.left_nav.loadFrame('adm', 'adm0', editUrl);
-                        }
-                    };
-                    window.top.addEventListener('message', windowMessageHandler);
-
-                    dlgopen('', 'cdrEditSource', 800, 200, '', '', {
-                        buttons: [{
-                            text: <?php echo xlj('Close'); ?>,
-                            close: true,
-                            style: 'secondary btn-sm'
-                        }],
-                        // don't think we need to refresh
-                        // onClosed: 'refreshme',
-                        allowResize: true,
-                        allowDrag: true,
-                        dialogId: 'rulereview',
-                        type: 'iframe',
-                        url: launchUrl,
-                        onClose: function() {
-                            window.top.removeEventListener('message', windowMessageHandler);
-                        }
-                    });
-                })
-            });
             <?php } // end crw
             ?>
 
             <?php if ($GLOBALS['enable_cdr'] && $GLOBALS['enable_cdr_prw']) { ?>
-            placeHtml("patient_reminders_fragment.php", "patient_reminders_ps_expand", false, true);
+                placeHtml("patient_reminders_fragment.php", "patient_reminders_ps_expand", false, true);
             <?php } // end prw
             ?>
 
@@ -696,14 +696,14 @@ $oemr_ui = new OemrUI($arrOeUiSettings);
                     AND grp_activity = 1
                 ORDER BY grp_seq, grp_title");
             while ($gfrow = sqlFetchArray($gfres)) { ?>
-            $(<?php echo js_escape("#" . $gfrow['grp_form_id'] . "_ps_expand"); ?>).load("lbf_fragment.php?formname=" + <?php echo js_url($gfrow['grp_form_id']); ?>, {
-                csrf_token_form: <?php echo js_escape(CsrfUtils::collectCsrfToken()); ?>
-            });
+                $(<?php echo js_escape("#" . $gfrow['grp_form_id'] . "_ps_expand"); ?>).load("lbf_fragment.php?formname=" + <?php echo js_url($gfrow['grp_form_id']); ?>, {
+                    csrf_token_form: <?php echo js_escape(CsrfUtils::collectCsrfToken()); ?>
+                });
             <?php } ?>
             tabbify();
 
             // modal for dialog boxes
-            $(".large_modal").on('click', function (e) {
+            $(".large_modal").on('click', function(e) {
                 e.preventDefault();
                 e.stopPropagation();
                 dlgopen('', '', 1000, 600, '', '', {
@@ -720,7 +720,7 @@ $oemr_ui = new OemrUI($arrOeUiSettings);
                 });
             });
 
-            $(".rx_modal").on('click', function (e) {
+            $(".rx_modal").on('click', function(e) {
                 e.preventDefault();
                 e.stopPropagation();
                 var title = <?php echo xlj('Amendments'); ?>;
@@ -734,8 +734,25 @@ $oemr_ui = new OemrUI($arrOeUiSettings);
                 });
             });
 
+
+         $(".rx_modal").on('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                var title = <?php echo xlj('Amendments'); ?>;
+                dlgopen('', 'editAmendments', 800, 300, '', title, {
+                    onClosed: 'refreshme',
+                    allowResize: true,
+                    allowDrag: true,
+                    dialogId: '',
+                    type: 'iframe',
+                    url: $(this).attr('href')
+                });
+            });
+
+
+
             // modal for image viewer
-            $(".image_modal").on('click', function (e) {
+            $(".image_modal").on('click', function(e) {
                 e.preventDefault();
                 e.stopPropagation();
                 dlgopen('', '', 400, 300, '', <?php echo xlj('Patient Images'); ?>, {
@@ -747,7 +764,7 @@ $oemr_ui = new OemrUI($arrOeUiSettings);
                 });
             });
 
-            $(".deleter").on('click', function (e) {
+            $(".deleter").on('click', function(e) {
                 e.preventDefault();
                 e.stopPropagation();
                 dlgopen('', '', 600, 360, '', '', {
@@ -765,7 +782,7 @@ $oemr_ui = new OemrUI($arrOeUiSettings);
                 });
             });
 
-            $(".iframe1").on('click', function (e) {
+            $(".iframe1").on('click', function(e) {
                 e.preventDefault();
                 e.stopPropagation();
                 dlgopen('', '', 350, 300, '', '', {
@@ -782,7 +799,7 @@ $oemr_ui = new OemrUI($arrOeUiSettings);
                 });
             });
             // for patient portal
-            $(".small_modal").on('click', function (e) {
+            $(".small_modal").on('click', function(e) {
                 e.preventDefault();
                 e.stopPropagation();
                 dlgopen('', '', 550, 550, '', '', {
@@ -816,27 +833,27 @@ $oemr_ui = new OemrUI($arrOeUiSettings);
             }
 
             <?php if ($GLOBALS['patient_birthday_alert']) {
-            // To display the birthday alert:
-            //  1. The patient is not deceased
-            //  2. The birthday is today (or in the past depending on global selection)
-            //  3. The notification has not been turned off (or shown depending on global selection) for this year
+                // To display the birthday alert:
+                //  1. The patient is not deceased
+                //  2. The birthday is today (or in the past depending on global selection)
+                //  3. The notification has not been turned off (or shown depending on global selection) for this year
                 $birthdayAlert = new BirthdayReminder($pid, $_SESSION['authUserID']);
                 if ($birthdayAlert->isDisplayBirthdayAlert()) {
-                    ?>
-            // show the active reminder modal
-            dlgopen('', 'bdayreminder', 300, 170, '', false, {
-                allowResize: false,
-                allowDrag: true,
-                dialogId: '',
-                type: 'iframe',
-                url: $("#birthday_popup").attr('href')
-            });
+            ?>
+                    // show the active reminder modal
+                    dlgopen('', 'bdayreminder', 300, 170, '', false, {
+                        allowResize: false,
+                        allowDrag: true,
+                        dialogId: '',
+                        type: 'iframe',
+                        url: $("#birthday_popup").attr('href')
+                    });
 
                 <?php } elseif ($active_reminders || $all_allergy_alerts) { ?>
-            openReminderPopup();
-            <?php } ?>
+                    openReminderPopup();
+                <?php } ?>
             <?php } elseif ($active_reminders || $all_allergy_alerts) { ?>
-            openReminderPopup();
+                openReminderPopup();
             <?php } ?>
         });
 
@@ -890,144 +907,141 @@ $oemr_ui = new OemrUI($arrOeUiSettings);
                 if (!empty($date_of_death)) {
                     $date_of_death = $date_of_death['date_deceased'];
                 }
-                ?>
-            parent.left_nav.setPatient(<?php echo js_escape($result['fname'] . " " . $result['lname']) .
-                    "," . js_escape($pid) . "," . js_escape($result['pubpid']) . ",'',";
-            if (empty($date_of_death)) {
-                echo js_escape(" " . xl('DOB') . ": " . oeFormatShortDate($result['DOB_YMD']) . " " . xl('Age') . ": " . getPatientAgeDisplay($result['DOB_YMD']));
-            } else {
-                echo js_escape(" " . xl('DOB') . ": " . oeFormatShortDate($result['DOB_YMD']) . " " . xl('Age at death') . ": " . oeFormatAge($result['DOB_YMD'], $date_of_death));
-            } ?>);
-            var EncounterDateArray = [];
-            var CalendarCategoryArray = [];
-            var EncounterIdArray = [];
-            var CalendarFacilityArray = [];
-          
-            var Count = 0;
-            
+            ?>
+                parent.left_nav.setPatient(<?php echo js_escape($result['fname'] . " " . $result['lname']) .
+                                                "," . js_escape($pid) . "," . js_escape($result['pubpid']) . ",'',";
+                                            if (empty($date_of_death)) {
+                                                echo js_escape(" " . xl('DOB') . ": " . oeFormatShortDate($result['DOB_YMD']) . " " . xl('Age') . ": " . getPatientAgeDisplay($result['DOB_YMD']));
+                                            } else {
+                                                echo js_escape(" " . xl('DOB') . ": " . oeFormatShortDate($result['DOB_YMD']) . " " . xl('Age at death') . ": " . oeFormatAge($result['DOB_YMD'], $date_of_death));
+                                            } ?>);
+                var EncounterDateArray = [];
+                var CalendarCategoryArray = [];
+                var EncounterIdArray = [];
+                var CalendarFacilityArray = [];
+
+                var Count = 0;
+
                 <?php
-            //Encounter details are stored to javacript as array.
+                //Encounter details are stored to javacript as array.
                 $result4 = sqlStatement("SELECT fe.encounter,fe.date,openemr_postcalendar_categories.pc_catname,facility.name FROM form_encounter AS fe " .
-                " left join openemr_postcalendar_categories on fe.pc_catid = openemr_postcalendar_categories.pc_catid left join facility on facility.id = fe.facility_id " .
-                " WHERE fe.pid = ? order by fe.date desc", array($pid));
+                    " left join openemr_postcalendar_categories on fe.pc_catid = openemr_postcalendar_categories.pc_catid left join facility on facility.id = fe.facility_id " .
+                    " WHERE fe.pid = ? order by fe.date desc", array($pid));
                 if (sqlNumRows($result4) > 0) {
                     while ($rowresult4 = sqlFetchArray($result4)) {
-                        ?>
-            EncounterIdArray[Count] = <?php echo js_escape($rowresult4['encounter']); ?>;
-            EncounterDateArray[Count] = <?php echo js_escape(oeFormatShortDate(date("Y-m-d", strtotime($rowresult4['date'])))); ?>;
-            CalendarCategoryArray[Count] = <?php echo js_escape(xl_appt_category($rowresult4['pc_catname'])); ?>;
-            CalendarFacilityArray[Count] = <?php echo js_escape($rowresult4['name']); ?>;   
-            Count++;
-                        <?php
+                ?>
+                        EncounterIdArray[Count] = <?php echo js_escape($rowresult4['encounter']); ?>;
+                        EncounterDateArray[Count] = <?php echo js_escape(oeFormatShortDate(date("Y-m-d", strtotime($rowresult4['date'])))); ?>;
+                        CalendarCategoryArray[Count] = <?php echo js_escape(xl_appt_category($rowresult4['pc_catname'])); ?>;
+                        CalendarFacilityArray[Count] = <?php echo js_escape($rowresult4['name']); ?>;
+                        Count++;
+                <?php
                     }
                 }
                 ?>
                 console.log(CalendarCategoryArray)
-       console.log(CalendarFacilityArray);         // console.log(CalendarFacilityArray); 
-            parent.left_nav.setPatientEncounter(EncounterIdArray, EncounterDateArray, CalendarCategoryArray, CalendarFacilityArray);
-            
-                <?php
+                console.log(CalendarFacilityArray); // console.log(CalendarFacilityArray); 
+                parent.left_nav.setPatientEncounter(EncounterIdArray, EncounterDateArray, CalendarCategoryArray, CalendarFacilityArray);
+
+            <?php
             } // end setting new pid
             ?>
             parent.left_nav.syncRadios();
             <?php if ((isset($_GET['set_pid'])) && (isset($_GET['set_encounterid'])) && (intval($_GET['set_encounterid']) > 0)) {
                 $query_result = sqlQuery("SELECT `date` FROM `form_encounter` WHERE `encounter` = ?", array($encounter)); ?>
-            encurl = 'encounter/encounter_top.php?set_encounter=' + <?php echo js_url($encounter); ?> +'&pid=' + <?php echo js_url($pid); ?>;
-            parent.left_nav.setEncounter(<?php echo js_escape(oeFormatShortDate(date("Y-m-d", strtotime($query_result['date'])))); ?>, <?php echo js_escape($encounter); ?>, 'enc');
-            top.restoreSession();left_nav.setPatientEncounter = function(EncounterIdArray,EncounterDateArray,CalendarCategoryArray,CalendarFacilityArray)
-{
+                encurl = 'encounter/encounter_top.php?set_encounter=' + <?php echo js_url($encounter); ?> + '&pid=' + <?php echo js_url($pid); ?>;
+                parent.left_nav.setEncounter(<?php echo js_escape(oeFormatShortDate(date("Y-m-d", strtotime($query_result['date'])))); ?>, <?php echo js_escape($encounter); ?>, 'enc');
+                top.restoreSession();
+                left_nav.setPatientEncounter = function(EncounterIdArray, EncounterDateArray, CalendarCategoryArray, CalendarFacilityArray) {
 
-    app_view_model.application_data[attendant_type]().encounterArray.removeAll();
-    for(var encIdx=0;encIdx<EncounterIdArray.length;encIdx++)
-    {   
-        app_view_model.application_data[attendant_type]().encounterArray.push(
-        new encounter_data(EncounterIdArray[encIdx], EncounterDateArray[encIdx], CalendarCategoryArray[encIdx],CalendarFacilityArray[encIdx]));
-    }
-};
+                    app_view_model.application_data[attendant_type]().encounterArray.removeAll();
+                    for (var encIdx = 0; encIdx < EncounterIdArray.length; encIdx++) {
+                        app_view_model.application_data[attendant_type]().encounterArray.push(
+                            new encounter_data(EncounterIdArray[encIdx], EncounterDateArray[encIdx], CalendarCategoryArray[encIdx], CalendarFacilityArray[encIdx]));
+                    }
+                };
 
-            parent.left_nav.loadFrame('enc2', 'enc', 'patient_file/' + encurl);
+                parent.left_nav.loadFrame('enc2', 'enc', 'patient_file/' + encurl);
             <?php } // end setting new encounter id (only if new pid is also set)
             ?>
         }
 
-        $(window).on('load', function () {
+        $(window).on('load', function() {
             setMyPatient();
         });
     </script>
 
     <style>
-      /* Bad practice to override here, will get moved to base style theme */
-      .card {
-        box-shadow: 1px 1px 1px hsl(0 0% 0% / .2);
-        border-radius: 0;
-      }
+        /* Bad practice to override here, will get moved to base style theme */
+        .card {
+            box-shadow: 1px 1px 1px hsl(0 0% 0% / .2);
+            border-radius: 0;
+        }
 
-      /* Short term fix. This ensures the problem list, allergies, medications, and immunization cards handle long lists without interuppting
+        /* Short term fix. This ensures the problem list, allergies, medications, and immunization cards handle long lists without interuppting
          the UI. This should be configurable and should go in a more appropriate place
       .pami-list {
           max-height: 200px;
           overflow-y: scroll;
       } */
 
-      <?php
-        if (!empty($GLOBALS['right_justify_labels_demographics']) && ($_SESSION['language_direction'] == 'ltr')) { ?>
-      div.tab td.label_custom, div.label_custom {
-        text-align: right !important;
-      }
+        <?php
+        if (!empty($GLOBALS['right_justify_labels_demographics']) && ($_SESSION['language_direction'] == 'ltr')) { ?>div.tab td.label_custom,
+        div.label_custom {
+            text-align: right !important;
+        }
 
-      div.tab td.data, div.data {
-        padding-left: 0.5em;
-        padding-right: 2em;
-      }
+        div.tab td.data,
+        div.data {
+            padding-left: 0.5em;
+            padding-right: 2em;
+        }
 
-            <?php
-        } ?>
-
-      <?php
-      // This is for layout font size override.
-        $grparr = array();
-        getLayoutProperties('DEM', $grparr, 'grp_size');
-        if (!empty($grparr['']['grp_size'])) {
-            $FONTSIZE = round($grparr['']['grp_size'] * 1.333333);
-            $FONTSIZE = round($FONTSIZE * 0.0625, 2);
+        <?php
+        } ?><?php
+            // This is for layout font size override.
+            $grparr = array();
+            getLayoutProperties('DEM', $grparr, 'grp_size');
+            if (!empty($grparr['']['grp_size'])) {
+                $FONTSIZE = round($grparr['']['grp_size'] * 1.333333);
+                $FONTSIZE = round($FONTSIZE * 0.0625, 2);
             ?>
 
-      /* Override font sizes in the theme. */
-      #DEM .groupname {
-        font-size: <?php echo attr($FONTSIZE); ?>rem;
-      }
+        /* Override font sizes in the theme. */
+        #DEM .groupname {
+            font-size: <?php echo attr($FONTSIZE); ?>rem;
+        }
 
-      #DEM .label {
-        font-size: <?php echo attr($FONTSIZE); ?>rem;
-      }
+        #DEM .label {
+            font-size: <?php echo attr($FONTSIZE); ?>rem;
+        }
 
-      #DEM .data {
-        font-size: <?php echo attr($FONTSIZE); ?>rem;
-      }
+        #DEM .data {
+            font-size: <?php echo attr($FONTSIZE); ?>rem;
+        }
 
-      #DEM .data td {
-        font-size: <?php echo attr($FONTSIZE); ?>rem;
-      }
+        #DEM .data td {
+            font-size: <?php echo attr($FONTSIZE); ?>rem;
+        }
 
-      <?php } ?>
-      :root {
-        --white: #fff;
-        --bg: hsl(0 0% 90%);
-      }
+        <?php } ?> :root {
+            --white: #fff;
+            --bg: hsl(0 0% 90%);
+        }
 
-      body {
-        background: var(--bg) !important;
-      }
+        body {
+            background: var(--bg) !important;
+        }
 
-      section {
-        background: var(--white);
-        margin-top: .25em;
-        padding: .25em;
-      }
+        section {
+            background: var(--white);
+            margin-top: .25em;
+            padding: .25em;
+        }
 
-      .section-header-dynamic {
-        border-bottom: none;
-      }
+        .section-header-dynamic {
+            border-bottom: none;
+        }
     </style>
     <title><?php echo xlt("Dashboard{{patient file}}"); ?></title>
 </head>
@@ -1623,7 +1637,8 @@ $oemr_ui = new OemrUI($arrOeUiSettings);
                             echo $twig->getTwig()->render('patient/card/adv_dir.html.twig', $viewArgs);
                         }
                     }  // close advanced dir block
-
+                    //  
+                    // 
                     // Show Clinical Reminders for any user that has rules that are permitted.
                     $clin_rem_check = resolve_rules_sql('', '0', true, '', $_SESSION['authUser']);
                     $cdr = $GLOBALS['enable_cdr'];
@@ -1649,7 +1664,6 @@ $oemr_ui = new OemrUI($arrOeUiSettings);
                     $displayAppts = false;
                     $displayRecurrAppts = false;
                     $displayPastAppts = false;
-
                     // Show current and upcoming appointments.
                     // Recurring appointment support and Appointment Display Sets
                     // added to Appointments by Ian Jardine ( epsdky ).
@@ -1712,7 +1726,7 @@ $oemr_ui = new OemrUI($arrOeUiSettings);
                                             break;
                                         }
                                     }
-                                // Break in the loop to improve performance
+                                    // Break in the loop to improve performance
                                 case 1:
                                     $firstApptIndx = 0;
                                     for ($i = 1; $i <= $limitApptIndx; ++$i) {
@@ -1721,7 +1735,7 @@ $oemr_ui = new OemrUI($arrOeUiSettings);
                                             break;
                                         }
                                     }
-                                // Break in the loop to improve performance
+                                    // Break in the loop to improve performance
                             }
 
                             if ($extraApptDate) {
@@ -1810,18 +1824,20 @@ $oemr_ui = new OemrUI($arrOeUiSettings);
                             }
                             $id = "recall_ps_expand";
                             $dispatchResult = $ed->dispatch(new CardRenderEvent('recall'), CardRenderEvent::EVENT_HANDLE);
-                            echo $twig->getTwig()->render('patient/card/recall.html.twig', [
-                                'title' => xl('Recall'),
-                                'id' => $id,
-                                'initiallyCollapsed' => (getUserSetting($id) == 0) ? true : false,
-                                'recalls' => $recallArr,
-                                'recallsAvailable' => ($count < 1 && empty($count2)) ? false : true,
-                                'prependedInjection' => $dispatchResult->getPrependedInjection(),
-                                'appendedInjection' => $dispatchResult->getAppendedInjection(),
-                            ]);
+                            echo $twig->getTwig()->render(
+                                'patient/card/recall.html.twig',
+                                [
+                                    'title' => xl('Recall'),
+                                    'id' => $id,
+                                    'initiallyCollapsed' => (getUserSetting($id) == 0) ? true : false,
+                                    'recalls' => $recallArr,
+                                    'recallsAvailable' => ($count < 1 && empty($count2)) ? false : true,
+                                    'prependedInjection' => $dispatchResult->getPrependedInjection(),
+                                    'appendedInjection' => $dispatchResult->getAppendedInjection(),
+                                ]
+                            );
                         }
                     } // End of Appointments Widget.
-
                     /* Widget that shows recurrences for appointments. */
                     $recurr = [];
                     if (isset($pid) && !$GLOBALS['disable_calendar'] && $GLOBALS['appt_recurrences_widget'] && AclMain::aclCheckCore('patients', 'appt')) {
@@ -1894,7 +1910,6 @@ $oemr_ui = new OemrUI($arrOeUiSettings);
                         }
                     }
                     // END of past appointments
-
                     // Display the Appt card
                     $id = "appointments_ps_expand";
                     $dispatchResult = $ed->dispatch(new CardRenderEvent('appointment'), CardRenderEvent::EVENT_HANDLE);
@@ -1949,6 +1964,31 @@ $oemr_ui = new OemrUI($arrOeUiSettings);
                             'pid' => $pid
                         ]);
                     endif;
+
+                   
+                    if (AclMain::aclCheckCore('patients', 'report')) :
+                        $dispatchResult = $ed->dispatch(new CardRenderEvent('report'), CardRenderEvent::EVENT_HANDLE);
+                        //patient report card
+                        $id = "patient_report_ps_expand";
+                        $viewArgs = [
+                            'title' => xl('Patient Report'),
+                            'id' => $id,    
+                            'initiallyCollapsed' => (getUserSetting($id) == 0) ? true : false,
+                            'btnLabel' => 'Edit',
+                            'btnLink' => 'patient_report.php',
+                            'linkMethod' => 'html',
+                            'bodyClass' => 'notab collapse show',
+                            'auth' => ($authWriteDisclosure || $authAddonlyDisclosure),
+                            'prependedInjection' => $dispatchResult->getPrependedInjection(),
+                            'appendedInjection' => $dispatchResult->getAppendedInjection(),
+                        ];
+                            echo $twig->getTwig()->render('patient/card/Patient_report.html.twig', $viewArgs);
+                    endif;
+
+                    $displayAppts = false;
+                    $displayRecurrAppts = false;
+                    $displayPastAppts = false;
+
                     ?>
                 </div> <!-- end right column div -->
             </div> <!-- end div.main > row:first  -->
@@ -1958,14 +1998,14 @@ $oemr_ui = new OemrUI($arrOeUiSettings);
     <script>
         // Array of skip conditions for the checkSkipConditions() function.
         var skipArray = [
-            <?php echo($condition_str ?? ''); ?>
+            <?php echo ($condition_str ?? ''); ?>
         ];
         checkSkipConditions();
 
 
         var isPost = <?php echo js_escape($showEligibility ?? false); ?>;
         var listId = '#' + <?php echo js_escape($list_id); ?>;
-        $(function () {
+        $(function() {
             $(listId).addClass("active");
             if (isPost === true) {
                 $("#eligibility").click();
@@ -1975,4 +2015,5 @@ $oemr_ui = new OemrUI($arrOeUiSettings);
     </script>
 </body>
 <?php $ed->dispatch(new RenderEvent($pid), RenderEvent::EVENT_RENDER_POST_PAGELOAD, 10); ?>
+
 </html>

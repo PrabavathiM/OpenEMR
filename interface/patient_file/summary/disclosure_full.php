@@ -90,7 +90,7 @@ if (isset($_GET['deletelid'])) {
         <div class="col-12">
             <h2 class="title">
                 <?php echo xlt('Disclosures'); ?>
-                <?php echo xlt('for'); ?>&nbsp;
+                <?php echo xlt('for'); ?>&nbsp; 
                 <a href="../summary/demographics.php" onclick="top.restoreSession()">
                     <?php $pname = getPatientName($pid);
                     echo text($pname); ?>

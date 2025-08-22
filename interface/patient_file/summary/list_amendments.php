@@ -29,9 +29,9 @@ if (!AclMain::aclCheckCore('patients', 'amendment')) {
 <html>
 <head>
 
-<?php Header::setupHeader();
-echo "<title>" . xlt('Amendment List') . "</title>";
-?>
+    <?php Header::setupHeader();
+    echo "<title>" . xlt('Amendment List') . "</title>";
+    ?>
 
 <script>
     function checkForAmendments() {

@@ -71,7 +71,7 @@ class DemographicsViewCard extends CardModel
             'btnLabel' => "Edit",
             'btnLink' => "demographics_full.php",
             'linkMethod' => 'html',
-            'auth' => $auth,
+            'auth' => $auth,    
             'result' => $this->patientData,
             'result2' => $this->employerData,
             'prependedInjection' => $dispatchResult->getPrependedInjection(),

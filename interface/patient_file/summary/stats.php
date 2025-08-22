@@ -32,6 +32,7 @@ $t = $twigContainer->getTwig();
  * @var $type string Issue Type
  * @return
  */
+// echo "testing1";exit;
 function getListData($pid, $type)
 {
     if ($type == "medication") {
@@ -294,6 +295,7 @@ if (!$GLOBALS['disable_immunizations'] && !$GLOBALS['weight_loss_clinic']) :
         $row['url'] = attr_js("immunizations.php?mode=edit&id=" . urlencode($row['id']) . "&csrf_token_form=" . urlencode(CsrfUtils::collectCsrfToken()));
         $imxList[] = $row;
     }
+    
     $id = "immunizations_ps_expand";
     echo $t->render('patient/card/immunizations.html.twig', [
         'title' => xl('Immunizations'),

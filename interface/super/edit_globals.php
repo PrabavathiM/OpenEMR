@@ -662,7 +662,9 @@ $apiUrl = $serverConfig->getInternalBaseApiUrl();
                                                     ['card_abrev' => attr('card_medicalproblems'), 'card_name' => xlt('Medical Problems')],
                                                     ['card_abrev' => attr('card_medication'), 'card_name' => xlt('Medications')],
                                                     ['card_abrev' => 'card_prescriptions', 'card_name' => 'Prescriptions'], // For now don't hide because can be disabled as feature.
-                                                    ['card_abrev' => attr('card_vitals'), 'card_name' => xlt('Vitals')]
+                                                    ['card_abrev' => attr('card_vitals'), 'card_name' => xlt('Vitals')],
+                                                    ['card_abrev' => attr(' '), 'card_name' => xlt('Patient Report')]
+
                                                 );
                                                 echo "  <select multiple class='form-control' name='form_{$i}[]' id='form_{$i}[]' size='10'>\n";
                                                 foreach ($res as $row) {

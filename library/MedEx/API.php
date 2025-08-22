@@ -3196,7 +3196,7 @@ class Setup extends Base
             $("#actualSignUp").click(function() {
                 var url = "save.php?MedEx=start";
                 var email = $("#new_email").val();
-                $("#actualSignUp").html('<i class="fa fa-spinner fa-pulse fa-fw"></i><span class="sr-only">Loading...</span>');
+                $("#actualSignUp").html('<i class="fa fa-spinner fa-pulse fa-fw"></i><span class="sr-only">Loadingtes=======...</span>');
                 formData = $("form#medex_start").serialize();
                 top.restoreSession();
                 $.ajax({

@@ -225,6 +225,8 @@ require_once("../../interface/globals.php");
 
                     <p><?php echo xlt("Prescription - lists the prescriptions of the current patient");?>.</p>
 
+                    <p><?php echo xlt("Patient Report - lists the prescriptions of the current patient");?>.</p>
+
                     <p><?php echo xlt("Tracks - if the Track Anything feature is enabled it will display a list of values that can be tracked and graphed");?>
                         <a href="https://www.open-emr.org/wiki/index.php/Track_Anything_Form" rel="noopener" target="_blank"><i class="fa fa-external-link-alt text-primary" aria-hidden="true" data-original-title="" title=""></i></a>
                     .</p>

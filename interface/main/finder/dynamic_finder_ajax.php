@@ -7,7 +7,8 @@
  *
  * @package   OpenEMR
  * @link      http://www.open-emr.org
- * @author    Rod Roark <rod@sunsetsystems.com>
+ * @author    Rod Roark <rod@sun
+ * systems.com>
  * @author    Brady Miller <brady.g.miller@gmail.com>
  * @author    Jerry Padgett <sjpadgett@gmail.com>
  * @copyright Copyright (c) 2012 Rod Roark <rod@sunsetsystems.com>

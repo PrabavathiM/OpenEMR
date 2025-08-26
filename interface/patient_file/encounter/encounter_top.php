@@ -35,7 +35,6 @@ if (isset($_GET["set_encounter"])) {
     }
 
     setencounter($_GET["set_encounter"]);
- 
 }
 
 $tabset = new TabsWrapper('enctabs');

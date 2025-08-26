@@ -15,6 +15,7 @@
 require_once("../../globals.php");
 require_once("$srcdir/options.inc.php");
 
+
 use OpenEMR\Common\Acl\AclMain;
 use OpenEMR\Common\Csrf\CsrfUtils;
 use OpenEMR\Common\Logging\EventAuditLogger;
@@ -26,8 +27,6 @@ if (!AclMain::aclCheckCore('patients', 'report')) {
     echo (new TwigContainer(null, $GLOBALS['kernel']))->getTwig()->render('core/unauthorized.html.twig', ['pageTitle' => xl("Patient Report")]);
     exit;
 }
-$authWrite = AclMain::aclCheckCore('patients', 'report', '', 'write');
-$authAddonly = AclMain::aclCheckCore('patients', 'report', '', 'addonly');
 
 ?>
 <html>
@@ -41,9 +40,8 @@ $authAddonly = AclMain::aclCheckCore('patients', 'report', '', 'addonly');
     <h2 class="title">
                 <?php echo xlt('Patient Report'); ?>
     </h2>
-<?php
-echo "testing111";
-?>
+    
+
 </body>
 </html>
 

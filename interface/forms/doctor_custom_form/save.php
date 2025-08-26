@@ -22,29 +22,31 @@ use OpenEMR\Common\Csrf\CsrfUtils;
         CsrfUtils::csrfNotVerified();
     }
 
-    if (!$encounter || !$pid) {
-        die(xlt("Internal error: Encounter or patient ID is missing!"));
-    }
+    // if (!$encounter || !$pid) {
+    //     die(xlt("Internal error: Encounter or patient ID is missing!"));
+    // }
 
     $formid = (int) ($_GET['id'] ?? 0);
     $doctor_instruction = $_POST["doctor_instruction"] ?? '';
     // $doctor_instruction = preg_replace('/[\x00-\x1F\x7F]/u', '', $doctor_instruction);
     // $doctor_instruction = mb_convert_encoding($doctor_instruction, 'UTF-8', 'UTF-8');
-
     $date = date('Y-m-d H:i:s');
     $activity = '1'; 
     $user = $_SESSION['authUser'];
+    $date_time = $_POST["date_time"];
+    $health_issue = $_POST["health_issue"];
+    $count = $_POST["count"];
 
     if ($formid) {
         // UPDATE existing record
-        $query = "UPDATE doctor_custom_form SET `doctor_instruction` = ?, `date` = ?, `activity` = ? WHERE `id` = ?";
-        sqlStatement($query, [$doctor_instruction, $date, $activity, $formid]);    
+        $query = "UPDATE doctor_custom_form SET `doctor_instruction` = ?, `date` = ?, `activity` = ?, `datetime` = ?, `health_issue` =?, `count` = ? WHERE `id` = ?";
+        sqlStatement($query, [$doctor_instruction, $date, $activity, $date_time, $health_issue, $count, $formid]);    
         
     } else {
         // INSERT new record
-        $query = "INSERT INTO doctor_custom_form (`pid`, `encounter`, `user`, `doctor_instruction`, `date`, `activity`) 
-                VALUES (?, ?, ?, ?, ?, ?)";
-        $newid = sqlInsert($query, [$pid, $encounter, $user, $doctor_instruction, $date, $activity]);
+        $query = "INSERT INTO doctor_custom_form (`pid`, `encounter`, `user`, `doctor_instruction`, `date`, `activity`, `datetime`, `health_issue`, `count`) 
+                VALUES (?, ?, ?, ?, ?, ?,?,?,?)";
+        $newid = sqlInsert($query, [$pid, $encounter, $user, $doctor_instruction, $date, $activity, $date_time, $health_issue, $count]);
         addForm($encounter, "Doctor Custom Form", $newid, "doctor_custom_form", $pid, $user);
     }
 

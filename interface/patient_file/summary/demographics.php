@@ -26,7 +26,6 @@
  */
 
 require_once("../../globals.php");
-
 require_once("$srcdir/lists.inc.php");
 require_once("$srcdir/patient.inc.php");
 require_once("$srcdir/options.inc.php");
@@ -34,6 +33,9 @@ require_once("../history/history.inc.php");
 require_once("$srcdir/clinical_rules.php");
 require_once("$srcdir/group.inc.php");
 require_once(__DIR__ . "/../../../library/appointments.inc.php");
+// require_once(dirname(__FILE__) . '/../../globals.php');
+require_once($GLOBALS["srcdir"] . "/api.inc.php");
+
 
 use OpenEMR\Billing\EDI270;
 use OpenEMR\Common\Acl\AclMain;
@@ -116,7 +118,7 @@ if ($GLOBALS['enable_cdr']) {
             $all_allergy_alerts = allergy_conflict($pid, 'all', $_SESSION['authUser'], true);
         }
     }
-    SessionUtil::setSession('alert_notify_pid', $pid);  
+    SessionUtil::setSession('alert_notify_pid', $pid);
     // can not output html until after above setSession call
     if (!empty($allergyWarningMessage)) {
         echo $allergyWarningMessage;
@@ -735,7 +737,7 @@ $oemr_ui = new OemrUI($arrOeUiSettings);
             });
 
 
-         $(".rx_modal").on('click', function(e) {
+            $(".rx_modal").on('click', function(e) {
                 e.preventDefault();
                 e.stopPropagation();
                 var title = <?php echo xlj('Amendments'); ?>;
@@ -1964,25 +1966,38 @@ $oemr_ui = new OemrUI($arrOeUiSettings);
                             'pid' => $pid
                         ]);
                     endif;
+                // patient report card                    
+                    $pid = $pid ?? $_GET['pid'] ?? null;
+                    $sql = "SELECT  encounter, doctor_instruction, datetime, health_issue, count
+                        FROM doctor_custom_form
+                        WHERE pid = ?
+                        ";
+                
+                    $res = sqlStatement($sql, [$pid]);
+                    $encounterData = [];
+                    // print_r($row = sqlFetchArray($res)); exit;
+                    while ($row = sqlFetchArray($res)) {
+                        $encounter = $row['encounter'];
+                        $encounterData[$encounter][] = $row;
+                    }
 
-                   
                     if (AclMain::aclCheckCore('patients', 'report')) :
                         $dispatchResult = $ed->dispatch(new CardRenderEvent('report'), CardRenderEvent::EVENT_HANDLE);
                         //patient report card
                         $id = "patient_report_ps_expand";
                         $viewArgs = [
                             'title' => xl('Patient Report'),
-                            'id' => $id,    
+                            'id' => $id,
                             'initiallyCollapsed' => (getUserSetting($id) == 0) ? true : false,
-                            'btnLabel' => 'Edit',
-                            'btnLink' => 'patient_report.php',
                             'linkMethod' => 'html',
                             'bodyClass' => 'notab collapse show',
                             'auth' => ($authWriteDisclosure || $authAddonlyDisclosure),
                             'prependedInjection' => $dispatchResult->getPrependedInjection(),
                             'appendedInjection' => $dispatchResult->getAppendedInjection(),
+                            'encounters' => $encounterData
                         ];
-                            echo $twig->getTwig()->render('patient/card/Patient_report.html.twig', $viewArgs);
+
+                    echo $twig->getTwig()->render('patient/card/Patient_report.html.twig', $viewArgs);
                     endif;
 
                     $displayAppts = false;

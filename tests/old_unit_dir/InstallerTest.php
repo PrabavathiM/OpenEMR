@@ -56,7 +56,7 @@ class InstallerTest extends PHPUnit_Framework_TestCase
   /* dataProvider for testLoginValidator */
     public static function loginValidatorData()
     {
-        return array( array( 'boris', true ),
+        return array(array( 'boris', true ),
                   array( '',      false )
                   );
     }

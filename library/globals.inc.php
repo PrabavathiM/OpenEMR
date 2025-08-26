@@ -4421,6 +4421,31 @@ $GLOBALS_METADATA = array(
             xl('Default form width of Questionnaire display.')
         ),
     ],
+     'Patient Report' => [
+        'patient_report' => array(
+            xl('Display the Patient Record'),
+            'bool',                           // data type
+            '0',                              // default = false
+            xl('Default form width of Patient Record display.')
+        ),
+    ],
+     'Patient Report' => [
+        'patient_report' => array(
+            xl('Display the Patient Record'),
+            'bool',                           // data type
+            '0',                              // default = false
+            xl('Default form width of Patient Record display.')
+        ),
+    ],
+    'Appointment' => [
+        'appointment' => array(
+            xl('Display the appointment'),
+            'bool',                           // data type
+            '0',                              // default = false
+            xl('display the appointment card')
+        ),
+    ],
+
 );
 
 

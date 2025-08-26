@@ -1913,7 +1913,8 @@ $oemr_ui = new OemrUI($arrOeUiSettings);
                     }
                     // END of past appointments
                     // Display the Appt card
-                    $id = "appointments_ps_expand";
+                    if (isset($GLOBALS['appointment']) && $GLOBALS['appointment'] == 1){
+                         $id = "appointments_ps_expand";
                     $dispatchResult = $ed->dispatch(new CardRenderEvent('appointment'), CardRenderEvent::EVENT_HANDLE);
                     echo $twig->getTwig()->render('patient/card/appointments.html.twig', [
                         'title' => xl("Appointments"),
@@ -1937,6 +1938,10 @@ $oemr_ui = new OemrUI($arrOeUiSettings);
                     ]);
 
                     echo "<div id=\"stats_div\"></div>";
+                    } else {
+
+                    }
+                   
 
                     // TRACK ANYTHING
                     // Determine if track_anything form is in use for this site.
@@ -1966,8 +1971,9 @@ $oemr_ui = new OemrUI($arrOeUiSettings);
                             'pid' => $pid
                         ]);
                     endif;
-                // patient report card                    
-                    $pid = $pid ?? $_GET['pid'] ?? null;
+
+                    if(isset($GLOBALS['patient_report']) && $GLOBALS['patient_report'] == 1){
+                       $pid = $pid ?? $_GET['pid'] ?? null;
                     $sql = "SELECT  encounter, doctor_instruction, datetime, health_issue, count
                         FROM doctor_custom_form
                         WHERE pid = ?
@@ -1999,6 +2005,9 @@ $oemr_ui = new OemrUI($arrOeUiSettings);
 
                     echo $twig->getTwig()->render('patient/card/Patient_report.html.twig', $viewArgs);
                     endif;
+                    } 
+                // patient report card                    
+                   
 
                     $displayAppts = false;
                     $displayRecurrAppts = false;

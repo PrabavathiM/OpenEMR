@@ -4259,8 +4259,16 @@ $GLOBALS_METADATA = array(
             'text-large',
             xl('How to display the patient name'),
         ],
-    ],
+ 'patient_name_display_format' => [
+            xl('Patient Name Display Format'),
+            [
+                '0' => xl('First Name Last Name'),
+                '1' => xl('Last Name First Name'),
+            ],
+        ],
 
+    ],
+    
     'Encounter Form' => [
         'default_chief_complaint' => array(
             xl('Default Reason for Visit'),

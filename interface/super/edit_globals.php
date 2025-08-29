@@ -429,6 +429,7 @@ $apiUrl = $serverConfig->getInternalBaseApiUrl();
                                 echo " <li" . ($i ? "" : " class='current'") .
                                 "><a href='#'>" .
                                 xlt($grpname) . "</a></li>\n";
+
                                 ++$i;
                             }
                         }
@@ -458,6 +459,7 @@ $apiUrl = $serverConfig->getInternalBaseApiUrl();
                                     foreach ($grparr as $fldid => $fldarr) {
                                         if (!$userMode || in_array($fldid, $USER_SPECIFIC_GLOBALS)) {
                                             list($fldname, $fldtype, $flddef, $flddesc) = $fldarr;
+
 
                                             // if the setting defines field options for our global setting we grab it, otherwise we default empty
                                             $fldoptions = $fldarr[4] ?? [];
@@ -663,7 +665,7 @@ $apiUrl = $serverConfig->getInternalBaseApiUrl();
                                                     ['card_abrev' => attr('card_medication'), 'card_name' => xlt('Medications')],
                                                     ['card_abrev' => 'card_prescriptions', 'card_name' => 'Prescriptions'], // For now don't hide because can be disabled as feature.
                                                     ['card_abrev' => attr('card_vitals'), 'card_name' => xlt('Vitals')],
-                                                    ['card_abrev' => attr(' '), 'card_name' => xlt('Patient Report')]
+                                                    ['card_abrev' => attr(' '), 'card_name' => xlt('    Report')]
 
                                                 );
                                                 echo "  <select multiple class='form-control' name='form_{$i}[]' id='form_{$i}[]' size='10'>\n";

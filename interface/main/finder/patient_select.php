@@ -161,7 +161,7 @@ $MAXSHOW = 100; // maximum number of results to display at once
 //the maximum number of patient records to display:
 $sqllimit = $MAXSHOW;
 $given = "*";
-$orderby = "lname ASC, fname ASC";
+$orderby = "fname ASC, lname ASC";
 
 $search_service_code = trim($_POST['search_service_code'] ?? '');
 echo "<input type='hidden' name='search_service_code' value='" .

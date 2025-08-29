@@ -36,10 +36,13 @@ if (isset($_POST['submit'])) {
         $memoryLimitUpdated = ini_set("memory_limit", "-1"); // set the memory limit to be unlimited so we can run the export.
         $pid = intval($_POST['pid'] ?? 0);
         $includeDocuments = intval($_POST['include_documents'] ?? 0) === 1;
+        // print_r($includeDocuments); die("testing");
         $fileSizeLimit = intval($_POST['file_size_limit'] ?? 500);
+// print_r($fileSizeLimit); die("testing");
         if ($_POST['action'] == 'createExport') {
             if ($pid > 0) {
                 $job = $exporter->createExportPatientJob($pid, $includeDocuments, $fileSizeLimit);
+                // print_r($job); die("testing");
 //                $result = $exporter->exportPatient($pid, $includeDocuments, $fileSizeLimit);
             } else {
                 $job = $exporter->createExportPatientPopulationJob($includeDocuments, $fileSizeLimit);
@@ -59,6 +62,7 @@ if (isset($_POST['submit'])) {
         } else if ($_POST['action'] == 'startExport') {
             try {
                 $taskId = intval($_POST['taskId'] ?? 0);
+                // print_r($taskId); 
                 $task = $exporter->runExportTask($taskId);
                 echo json_encode($task->getJSON());
             } catch (\Exception $exception) {

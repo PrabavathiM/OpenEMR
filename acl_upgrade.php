@@ -563,6 +563,7 @@ if ($acl_version < $upgrade_acl) {
     //Add new object Sections
     echo "<BR/><B>Adding new object sections</B><BR/>";
     AclExtended::addObjectAcl('admin', 'Administration', 'manage_modules', 'Manage modules');
+    
 
     //Add new Objects
     echo "<BR/><B>Adding new objects</B><BR/>";

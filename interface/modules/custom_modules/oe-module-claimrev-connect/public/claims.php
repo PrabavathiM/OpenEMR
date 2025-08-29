@@ -55,7 +55,7 @@ if (!AclMain::aclCheckCore('acct', 'bill')) {
                     </div>
                     <div class="col">
                       
-                    </div>                    
+                    </div>                      
                     <div class="col">
                         
                     </div>
@@ -107,7 +107,6 @@ if (!AclMain::aclCheckCore('acct', 'bill')) {
                 <table class="table">
                 <thead>
                     <tr>
-                    
                         <th scope="col"><?php echo xlt("Status") ?></th>
                         <th scope="col"><?php echo xlt("Payer Info") ?></th>
                         <th scope="col"><?php echo xlt("Provider Info") ?></th>

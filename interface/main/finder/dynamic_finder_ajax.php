@@ -263,32 +263,54 @@ while ($row = sqlFetchArray($res)) {
 
 $query = "SELECT $sellist FROM patient_data WHERE $where $orderby $limit";
 $res = sqlStatement($query, $srch_bind);
-while ($row = sqlFetchArray($res)) {
-    // Each <tr> will have an ID identifying the patient.
-    $arow = array('DT_RowId' => 'pid_' . $row['pid']);
-    foreach ($aColumns as $colname) {
-        if ($colname == 'name') {
-            $name = $row['lname'];
-            if ($name && $row['fname']) {
-                $name .= ', ';
-            }
+// patient name display format as the globals
+$patient_name_display_format = $GLOBALS['patient_name_display_format'] ?? 0;
+    while ($row = sqlFetchArray($res)) {
+        // Each <tr> will have an ID identifying the patient.
+        $arow = array('DT_RowId' => 'pid_' . $row['pid']);  
+        foreach ($aColumns as $colname) {   
+            if ($colname == 'name') {
+                if($patient_name_display_format == 0){
+                      $name = $row['fname'];
+                if ($name && $row['lname']) {
+                    $name .= ', ';
+                }
 
-            if ($row['fname']) {
-                $name .= $row['fname'];
-            }
+                if ($row['lname']) {
+                    $name .= $row['lname'];
+                }
 
-            if ($row['mname']) {
-                $name .= ' ' . $row['mname'];
-            }
+                if ($row['mname']) {
+                    $name .= ' ' . $row['mname'];
+                }
 
-            $arow[] = attr($name);
-        } else {
-            $arow[] = isset($fieldsInfo[$colname]) ? attr(generate_plaintext_field($fieldsInfo[$colname], $row[$colname])) : attr($row[$colname]);
+                $arow[] = attr($name);
+
+            } else {
+                $name = $row['lname'];
+                if ($name && $row['fname']) {
+                    $name .= ', ';
+                }
+
+                if ($row['fname']) {
+                    $name .= $row['fname'];
+                }
+
+                if ($row['mname']) {
+                    $name .= ' ' . $row['mname'];
+                }
+
+                $arow[] = attr($name);
+            }
+               
+            } else {
+                $arow[] = isset($fieldsInfo[$colname]) ? attr(generate_plaintext_field($fieldsInfo[$colname], $row[$colname])) : attr($row[$colname]);
+            }
         }
+
+        $out['aaData'][] = $arow;
     }
 
-    $out['aaData'][] = $arow;
-}
 
 // error_log($query); // debugging
 

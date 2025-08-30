@@ -972,17 +972,17 @@ $eventDispatcher = $GLOBALS['kernel']->getEventDispatcher();
         }
 
         $cres = sqlStatement("SELECT pc_catid, pc_cattype, pc_catname, " .
-            "pc_recurrtype, pc_duration, pc_end_all_day " .
-            "FROM openemr_postcalendar_categories where pc_active = 1 ORDER BY pc_seq");
+            "pc_recurrtype, pc_duration " . 
+            "FROM categories_patient_report");
         $catoptions = "";
         $prefcat_options = "    <option value='0'>-- " . xlt("None{{Category}}") . " --</option>\n";
         $thisduration = 0;
         if ($eid) {
-            $thisduration = $row['pc_alldayevent'] ? 1440 : round($row['pc_duration'] / 60);
+            $thisduration = $row['pc_alldayevent'] ? 1440 : round($row['pc_duration']);
         }
 
         while ($crow = sqlFetchArray($cres)) {
-            $duration = round($crow['pc_duration'] / 60);
+            $duration = round($crow['pc_duration']);
             if ($crow['pc_end_all_day']) {
                 $duration = 1440;
             }

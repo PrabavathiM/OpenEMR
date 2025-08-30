@@ -17,8 +17,8 @@ targets['Reports']='rep';
 targets['Miscellaneous']='msc';
 targets['Patients']='lst';
 targets['Patient Appointment Report'] = 'par';  // ✅ no space at end
+targets['Category Report'] = 'cr'; 
 
-// targets['Patient Appointment Tracker'] = 'pat';
 
 var acl_reqs={};
 var global_reqs={};
